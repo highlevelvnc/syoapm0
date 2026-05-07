@@ -12,6 +12,7 @@ import { ScanNowButton } from "@/components/scan-now-button";
 import { CloudflareCard } from "@/components/cloudflare-card";
 import { GithubCard } from "@/components/github-card";
 import { ScoreHistory } from "@/components/score-history";
+import { TagsEditor } from "@/components/tags-editor";
 import { ACHIEVEMENTS } from "@/lib/scanners/achievements";
 import type { Grade } from "@/lib/scanners";
 
@@ -24,7 +25,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
   const { data: site } = await supabase
     .from("sites")
     .select(
-      "id, domain, name, theme_color, lang_default, badge_enabled, created_at, cloudflare_zone_id, cloudflare_zone_name, cloudflare_hardened_at, cloudflare_settings_applied, github_owner, github_repo, github_last_scan_at, github_open_alerts"
+      "id, domain, name, theme_color, lang_default, badge_enabled, created_at, cloudflare_zone_id, cloudflare_zone_name, cloudflare_hardened_at, cloudflare_settings_applied, github_owner, github_repo, github_last_scan_at, github_open_alerts, tags"
     )
     .eq("id", id)
     .maybeSingle();
@@ -117,7 +118,11 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           <span className="badge-ok">live</span>
         </div>
       </div>
-      <div className="text-sm text-ink-500 mb-8">{site.domain}</div>
+      <div className="text-sm text-ink-500 mb-6">{site.domain}</div>
+
+      <div className="mb-8">
+        <TagsEditor siteId={site.id} initial={(site.tags as string[]) ?? []} />
+      </div>
 
       {/* SECURITY */}
       <section className="mb-10">

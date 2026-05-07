@@ -14,7 +14,7 @@ export default async function DashboardPage() {
   const { data: sitesRaw } = await supabase
     .from("sites")
     .select(
-      "id, domain, name, theme_color, created_at, cloudflare_hardened_at, github_repo, github_open_alerts"
+      "id, domain, name, theme_color, created_at, cloudflare_hardened_at, github_repo, github_open_alerts, tags"
     )
     .order("created_at", { ascending: false });
 
@@ -87,6 +87,7 @@ export default async function DashboardPage() {
       github_repo: s.github_repo,
       github_alerts: s.github_open_alerts ?? 0,
       critical_high: findingsBySite[s.id] ?? 0,
+      tags: (s.tags as string[]) ?? [],
     };
   });
 

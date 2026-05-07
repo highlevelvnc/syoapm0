@@ -21,6 +21,7 @@ export interface SiteRow {
   github_repo: string | null;
   github_alerts: number;
   critical_high: number;
+  tags: string[];
 }
 
 type SortKey = "name" | "score" | "scan_at" | "consents" | "alerts";
@@ -28,15 +29,30 @@ type SortDir = "asc" | "desc";
 
 export function SitesTable({ rows }: { rows: SiteRow[] }) {
   const [search, setSearch] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<SortKey>("score");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
+  const allTags = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const r of rows) for (const t of r.tags) map.set(t, (map.get(t) ?? 0) + 1);
+    return Array.from(map.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag, count]) => ({ tag, count }));
+  }, [rows]);
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
-    return rows.filter((r) =>
-      !q ? true : r.name.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q)
-    );
-  }, [rows, search]);
+    return rows.filter((r) => {
+      if (activeTag && !r.tags.includes(activeTag)) return false;
+      if (!q) return true;
+      return (
+        r.name.toLowerCase().includes(q) ||
+        r.domain.toLowerCase().includes(q) ||
+        r.tags.some((t) => t.includes(q))
+      );
+    });
+  }, [rows, search, activeTag]);
 
   const sorted = useMemo(() => {
     const arr = [...filtered];
@@ -86,7 +102,7 @@ export function SitesTable({ rows }: { rows: SiteRow[] }) {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4 flex-wrap">
+      <div className="flex items-center gap-3 mb-3 flex-wrap">
         <input
           type="text"
           placeholder={`procurar em ${rows.length} sites...`}
@@ -98,6 +114,34 @@ export function SitesTable({ rows }: { rows: SiteRow[] }) {
           {sorted.length} de {rows.length}
         </div>
       </div>
+
+      {allTags.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          <button
+            onClick={() => setActiveTag(null)}
+            className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded border transition-colors ${
+              activeTag === null
+                ? "border-matrix-500/40 bg-matrix-500/10 text-matrix-300"
+                : "border-ink-700 text-ink-500 hover:text-ink-300"
+            }`}
+          >
+            all ({rows.length})
+          </button>
+          {allTags.map(({ tag, count }) => (
+            <button
+              key={tag}
+              onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+              className={`text-[10px] uppercase tracking-wider px-2 py-1 rounded border transition-colors font-mono ${
+                activeTag === tag
+                  ? "border-matrix-500/40 bg-matrix-500/10 text-matrix-300"
+                  : "border-ink-700 text-ink-500 hover:text-ink-300"
+              }`}
+            >
+              #{tag} ({count})
+            </button>
+          ))}
+        </div>
+      )}
 
       {sorted.length === 0 ? (
         <div className="terminal-card p-8 text-center text-sm text-ink-500">
@@ -131,6 +175,22 @@ export function SitesTable({ rows }: { rows: SiteRow[] }) {
                           {r.name}
                         </Link>
                         <div className="text-[10px] text-ink-500 truncate">{r.domain}</div>
+                        {r.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {r.tags.map((t) => (
+                              <button
+                                key={t}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setActiveTag(t);
+                                }}
+                                className="text-[9px] px-1.5 py-0 rounded text-matrix-300/80 hover:text-matrix-200 hover:bg-matrix-500/5 font-mono"
+                              >
+                                #{t}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </td>
