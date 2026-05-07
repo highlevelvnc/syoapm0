@@ -34,11 +34,23 @@ export async function generateMetadata({
     ? `${domain} scored ${cached.score}/100 on BlindAI. ${cached.total_findings} findings detected (${cached.critical_findings} critical, ${cached.high_findings} high).`
     : `Free public security scan: SSL, headers, DNS, exposed paths, anti-phishing.`;
 
+  const ogImage = `/og/test/${encodeURIComponent(domain)}`;
+
   return {
     title,
     description,
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary", title, description },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
     robots: { index: true, follow: true },
   };
 }
