@@ -8,6 +8,7 @@ import { InstallGuide } from "@/components/install-guide";
 import { Pricing } from "@/components/pricing";
 import { Faq } from "@/components/faq";
 import { StatsCounter } from "@/components/stats-counter";
+import { LocaleToggle } from "@/components/locale-toggle";
 import { APP_NAME } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,7 @@ export default function HomePage() {
             <a href="#how" className="btn-ghost hidden sm:inline-flex">como funciona</a>
             <a href="#pricing" className="btn-ghost hidden sm:inline-flex">pricing</a>
             <a href="#faq" className="btn-ghost hidden sm:inline-flex">faq</a>
+            <LocaleToggle current="pt" />
             <Link href="/auth/login" className="btn-matrix-solid">entrar →</Link>
           </div>
         </div>
