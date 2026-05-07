@@ -1,5 +1,5 @@
 export type Severity = "critical" | "high" | "medium" | "low" | "info";
-export type Category = "ssl" | "headers" | "dns" | "exposure" | "tech" | "general";
+export type Category = "ssl" | "headers" | "dns" | "exposure" | "tech" | "general" | "phishing";
 export type Grade = "A+" | "A" | "B" | "C" | "D" | "F";
 
 export interface Finding {
@@ -22,6 +22,7 @@ export interface ScanReport {
   headers: ScannerResult;
   dns: ScannerResult;
   exposure: ScannerResult;
+  phishing: ScannerResult;
   score: number;
   grade: Grade;
   categoryScores: Record<Category, number>;

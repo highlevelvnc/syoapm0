@@ -26,6 +26,7 @@ export async function runAndPersistScan({ siteId, domain }: RunOptions) {
       ...report.headers.findings,
       ...report.dns.findings,
       ...report.exposure.findings,
+      ...report.phishing.findings,
     ];
 
     if (allFindings.length > 0) {

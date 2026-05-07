@@ -2,9 +2,18 @@
 
 import { useState } from "react";
 
-export function SnippetDisplay({ siteId, apiBase }: { siteId: string; apiBase: string }) {
+export function SnippetDisplay({
+  siteId,
+  apiBase,
+  langDefault,
+}: {
+  siteId: string;
+  apiBase: string;
+  langDefault?: string;
+}) {
   const [copied, setCopied] = useState(false);
-  const snippet = `<script\n  src="${apiBase}/cdn/w.js"\n  data-site="${siteId}"\n  async\n></script>`;
+  const langAttr = langDefault ? `\n  data-lang="${langDefault}"` : "";
+  const snippet = `<script\n  src="${apiBase}/cdn/w.js"\n  data-site="${siteId}"${langAttr}\n  async\n></script>`;
 
   const copy = async () => {
     try {

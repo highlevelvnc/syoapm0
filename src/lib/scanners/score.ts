@@ -7,7 +7,7 @@ export function calculateScore(findings: Finding[]): number {
 }
 
 export function calculateCategoryScores(allFindings: Finding[]): Record<Category, number> {
-  const cats: Category[] = ["ssl", "headers", "dns", "exposure", "tech", "general"];
+  const cats: Category[] = ["ssl", "headers", "dns", "exposure", "phishing", "tech", "general"];
   const out = {} as Record<Category, number>;
   for (const cat of cats) {
     const catFindings = allFindings.filter((f) => f.category === cat);

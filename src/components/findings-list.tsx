@@ -13,6 +13,7 @@ const CATEGORY_LABEL: Record<Category, string> = {
   headers: "Headers",
   dns: "DNS",
   exposure: "Exposure",
+  phishing: "Phishing",
   tech: "Tech",
   general: "General",
 };

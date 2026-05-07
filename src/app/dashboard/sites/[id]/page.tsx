@@ -150,7 +150,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
             // compliance · snippet
           </div>
-          <SnippetDisplay siteId={site.id} apiBase={APP_URL} />
+          <SnippetDisplay siteId={site.id} apiBase={APP_URL} langDefault={site.lang_default} />
         </div>
         <div>
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">

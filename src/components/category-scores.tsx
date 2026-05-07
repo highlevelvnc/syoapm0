@@ -6,12 +6,13 @@ const CATEGORY_INFO: Record<Category, { label: string; description: string }> = 
   headers:  { label: "Headers",  description: "HSTS, CSP, X-Frame, etc." },
   dns:      { label: "DNS",      description: "SPF, DMARC, CAA, DNSSEC" },
   exposure: { label: "Exposure", description: ".env, .git, admin paths" },
+  phishing: { label: "Phishing", description: "typosquatting, dominios similares" },
   tech:     { label: "Tech",     description: "stack detectada" },
   general:  { label: "General",  description: "geral" },
 };
 
 export function CategoryScores({ scores }: { scores: Record<string, number> | null }) {
-  const visible: Category[] = ["ssl", "headers", "dns", "exposure"];
+  const visible: Category[] = ["ssl", "headers", "dns", "exposure", "phishing"];
   if (!scores) {
     return (
       <div className="terminal-card p-5">

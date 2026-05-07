@@ -20,12 +20,16 @@
   var BADGE_DISABLED = script && script.getAttribute("data-badge") === "false";
 
   // ─── i18n ───────────────────────────────────────────────
-  var BROWSER_LANG = (navigator.language || "en").toLowerCase();
-  var LANG = BROWSER_LANG.indexOf("pt-pt") === 0 || BROWSER_LANG === "pt"
-    ? "pt-PT"
-    : BROWSER_LANG.indexOf("pt") === 0
-      ? "pt-BR"
-      : "en";
+  var FORCED_LANG = script && script.getAttribute("data-lang");
+  var SUPPORTED = ["pt-PT", "pt-BR", "en"];
+  function pickLang() {
+    if (FORCED_LANG && SUPPORTED.indexOf(FORCED_LANG) >= 0) return FORCED_LANG;
+    var b = (navigator.language || "en").toLowerCase();
+    if (b.indexOf("pt-pt") === 0 || b === "pt") return "pt-PT";
+    if (b.indexOf("pt") === 0) return "pt-BR";
+    return "en";
+  }
+  var LANG = pickLang();
 
   var COPY = {
     "pt-PT": {

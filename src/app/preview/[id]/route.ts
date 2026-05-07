@@ -26,7 +26,7 @@ export async function GET(
   const sb = createServiceClient();
   const { data: site } = await sb
     .from("sites")
-    .select("id, name, domain, theme_color")
+    .select("id, name, domain, theme_color, lang_default")
     .eq("id", id)
     .maybeSingle();
 
@@ -76,7 +76,7 @@ export async function GET(
       <p class="lorem">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus tincidunt risus a justo cursus, vitae fringilla velit faucibus.</p>
     </div>
   </div>
-  <script async src="${APP_URL}/cdn/w.js" data-site="${site.id}"></script>
+  <script async src="${APP_URL}/cdn/w.js" data-site="${site.id}" data-lang="${escapeHtml(site.lang_default)}"></script>
 </body>
 </html>`;
 
