@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MatrixRain } from "@/components/matrix-rain";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { CookieDemo } from "@/components/cookie-demo";
+import { PublicScanForm } from "@/components/public-scan-form";
 import { APP_NAME } from "@/lib/constants";
 
 export default function HomePage() {
@@ -17,7 +18,7 @@ export default function HomePage() {
             <span>{APP_NAME}</span>
           </Link>
           <div className="flex items-center gap-2 text-xs">
-            <a href="#demo" className="btn-ghost hidden sm:inline-flex">demo</a>
+            <Link href="/test" className="btn-ghost hidden sm:inline-flex">test grátis</Link>
             <a href="#how" className="btn-ghost hidden sm:inline-flex">como funciona</a>
             <a href="#roadmap" className="btn-ghost hidden sm:inline-flex">roadmap</a>
             <Link href="/auth/login" className="btn-matrix-solid">entrar →</Link>
@@ -38,10 +39,17 @@ export default function HomePage() {
           Plataforma 100% defensiva para proteger todos os teus sites — Next.js, WordPress, ou qualquer stack. Cola um snippet, recebe scoring de segurança, alertas em tempo real e logs de consent prontos para auditoria.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/auth/login" className="btn-matrix-solid">
+          <Link href="/auth/signup" className="btn-matrix-solid">
             $ começar — grátis
           </Link>
           <a href="#demo" className="btn-matrix">ver demo ↓</a>
+        </div>
+
+        <div className="mt-10 pt-8 border-t border-matrix-900">
+          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
+            // ou testa qualquer site sem signup
+          </div>
+          <PublicScanForm size="lg" />
         </div>
 
         <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-3xl">
