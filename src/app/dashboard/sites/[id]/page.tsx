@@ -108,6 +108,14 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
             privacy policy
           </Link>
           <a
+            href={`/api/sites/${site.id}/report`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-matrix"
+          >
+            export PDF ↗
+          </a>
+          <a
             href={`/preview/${site.id}`}
             target="_blank"
             rel="noopener noreferrer"
