@@ -11,6 +11,7 @@ import { FindingsList, type DBFinding } from "@/components/findings-list";
 import { ScanNowButton } from "@/components/scan-now-button";
 import { CloudflareCard } from "@/components/cloudflare-card";
 import { GithubCard } from "@/components/github-card";
+import { ScoreHistory } from "@/components/score-history";
 import { ACHIEVEMENTS } from "@/lib/scanners/achievements";
 import type { Grade } from "@/lib/scanners";
 
@@ -145,10 +146,11 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           />
         </div>
         {lastScan?.completed_at && (
-          <div className="text-[10px] text-ink-500">
+          <div className="text-[10px] text-ink-500 mb-6">
             último scan: {fmtDate(lastScan.completed_at)} · {findings.length} findings · {criticalHigh} críticos/altos
           </div>
         )}
+        <ScoreHistory siteId={site.id} />
         {lastScan?.status === "failed" && (
           <div className="text-xs text-red-400 mt-2 border border-red-500/30 bg-red-950/20 px-3 py-2 rounded">
             scan falhou: {lastScan.error || "erro desconhecido"}

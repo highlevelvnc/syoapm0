@@ -2,7 +2,7 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { runScan } from "./index";
 import { deriveAchievements } from "./achievements";
 import { sendEmail } from "@/lib/email/resend";
-import { scanReportEmail } from "@/lib/email/templates";
+import { scanReportEmail, regressionAlertEmail } from "@/lib/email/templates";
 import type { Finding } from "./types";
 
 interface RunOptions {
@@ -57,6 +57,62 @@ async function sendScanAlert(opts: {
     topIssues,
   });
 
+  await sendEmail({ to: email, ...tpl }).catch(() => {});
+}
+
+const REGRESSION_THRESHOLD = 5;
+
+async function sendRegressionAlertIfNeeded(opts: {
+  siteId: string;
+  scanId: string;
+  newScore: number;
+  newGrade: string;
+}) {
+  if (!process.env.RESEND_API_KEY) return;
+  const sb = createServiceClient();
+
+  const { data: prevScan } = await sb
+    .from("scans")
+    .select("score, grade")
+    .eq("site_id", opts.siteId)
+    .eq("status", "completed")
+    .neq("id", opts.scanId)
+    .not("score", "is", null)
+    .order("started_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (!prevScan || prevScan.score == null) return;
+  if (opts.newScore >= prevScan.score - REGRESSION_THRESHOLD) return;
+
+  const { data: site } = await sb
+    .from("sites")
+    .select("id, name, domain, owner_id")
+    .eq("id", opts.siteId)
+    .maybeSingle();
+  if (!site) return;
+
+  const { data: channel } = await sb
+    .from("notification_channels")
+    .select("config")
+    .eq("owner_id", site.owner_id)
+    .eq("kind", "email")
+    .eq("enabled", true)
+    .maybeSingle();
+  if (!channel) return;
+
+  const email = (channel.config as { email?: string } | null)?.email;
+  if (!email) return;
+
+  const tpl = regressionAlertEmail({
+    siteName: site.name,
+    domain: site.domain,
+    siteId: site.id,
+    prevScore: prevScan.score,
+    newScore: opts.newScore,
+    prevGrade: (prevScan.grade as string) || "?",
+    newGrade: opts.newGrade,
+  });
   await sendEmail({ to: email, ...tpl }).catch(() => {});
 }
 
@@ -146,6 +202,13 @@ export async function runAndPersistScan({ siteId, domain }: RunOptions) {
     if (criticalCount + highCount > 0) {
       await sendScanAlert({ siteId, scanId, score: report.score, grade: report.grade, criticalCount, highCount, findings: allFindings });
     }
+
+    await sendRegressionAlertIfNeeded({
+      siteId,
+      scanId,
+      newScore: report.score,
+      newGrade: report.grade,
+    });
 
     return { scanId, score: report.score, grade: report.grade, findingsCount: allFindings.length };
   } catch (err) {
