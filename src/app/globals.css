@@ -9,8 +9,8 @@
 
 html, body {
   overflow-x: clip;
-  background: #0A0E0A;
-  color: #B6FFCB;
+  background: #0a0e13;
+  color: #99a3b5;
 }
 
 body {
@@ -21,20 +21,20 @@ body {
 }
 
 ::selection {
-  background: rgba(0, 255, 65, 0.3);
-  color: #fff;
+  background: rgba(16, 185, 129, 0.25);
+  color: #f5f7fa;
 }
 
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
-::-webkit-scrollbar-track { background: #0A0E0A; }
+::-webkit-scrollbar-track { background: #0a0e13; }
 ::-webkit-scrollbar-thumb {
-  background: #006619;
+  background: #1c2330;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover { background: #00CC34; }
+::-webkit-scrollbar-thumb:hover { background: #2a3340; }
 
 @layer components {
   .scanline {
@@ -48,54 +48,64 @@ body {
     background: linear-gradient(
       180deg,
       transparent 0%,
-      rgba(0, 255, 65, 0.04) 50%,
+      rgba(16, 185, 129, 0.025) 50%,
       transparent 100%
     );
-    animation: scan 8s linear infinite;
+    animation: scan 12s linear infinite;
     pointer-events: none;
   }
 
   .grid-bg {
     background-image:
-      linear-gradient(rgba(0, 255, 65, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 65, 0.04) 1px, transparent 1px);
+      linear-gradient(rgba(16, 185, 129, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16, 185, 129, 0.02) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 
   .text-glow {
-    text-shadow: 0 0 8px rgba(0, 255, 65, 0.5), 0 0 24px rgba(0, 255, 65, 0.25);
+    text-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
   }
 
   .border-matrix-faint {
-    border-color: rgba(0, 255, 65, 0.18);
+    border-color: rgba(16, 185, 129, 0.15);
   }
 
   .terminal-card {
-    @apply border border-matrix-900 bg-ink-800/60 rounded-md;
-    box-shadow: 0 0 0 1px rgba(0, 255, 65, 0.06), inset 0 0 24px rgba(0, 255, 65, 0.03);
+    @apply border border-ink-700 bg-ink-800/50 rounded-md backdrop-blur-sm;
   }
 
   .btn-matrix {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded border border-matrix-500 text-matrix-100 hover:bg-matrix-500/10 hover:text-matrix-50 hover:shadow-matrix transition-all uppercase tracking-wider text-xs;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-ink-600 text-ink-200 hover:border-matrix-500/60 hover:text-ink-50 hover:bg-matrix-500/5 transition-colors uppercase tracking-wider text-xs font-medium;
   }
 
   .btn-matrix-solid {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded bg-matrix-500 text-ink-950 hover:bg-matrix-400 hover:shadow-matrix transition-all uppercase tracking-wider text-xs font-bold;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-matrix-500 text-ink-950 hover:bg-matrix-400 transition-colors uppercase tracking-wider text-xs font-bold;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded text-matrix-200/70 hover:text-matrix-100 hover:bg-matrix-900/30 transition-all uppercase tracking-wider text-xs;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md text-ink-400 hover:text-ink-100 hover:bg-ink-800/60 transition-colors uppercase tracking-wider text-xs;
   }
 
   .input-matrix {
-    @apply w-full bg-ink-950 border border-matrix-900 rounded px-3 py-2 text-matrix-50 placeholder:text-matrix-700 focus:outline-none focus:border-matrix-500 focus:shadow-matrix transition-all font-mono;
+    @apply w-full bg-ink-950 border border-ink-700 rounded-md px-3 py-2 text-ink-100 placeholder:text-ink-500 focus:outline-none focus:border-matrix-500/60 transition-colors font-mono;
   }
 
   .badge {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border;
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] uppercase tracking-wider border font-medium;
   }
-  .badge-ok { @apply badge border-matrix-500/40 text-matrix-300 bg-matrix-900/30; }
-  .badge-warn { @apply badge border-yellow-500/40 text-yellow-300 bg-yellow-950/30; }
-  .badge-err { @apply badge border-red-500/40 text-red-300 bg-red-950/30; }
-  .badge-muted { @apply badge border-matrix-900 text-matrix-700 bg-ink-800/40; }
+  .badge-ok {
+    @apply badge border-matrix-500/40 text-matrix-300 bg-matrix-500/10;
+  }
+  .badge-warn {
+    @apply badge border-amber-500/40 text-amber-300 bg-amber-500/10;
+  }
+  .badge-err {
+    @apply badge border-red-500/40 text-red-300 bg-red-500/10;
+  }
+  .badge-muted {
+    @apply badge border-ink-600 text-ink-400 bg-ink-800/40;
+  }
+  .badge-info {
+    @apply badge border-cyan-500/40 text-cyan-300 bg-cyan-500/10;
+  }
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export function MatrixRain({ opacity = 0.07 }: { opacity?: number }) {
+export function MatrixRain({ opacity = 0.025 }: { opacity?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -31,9 +31,9 @@ export function MatrixRain({ opacity = 0.07 }: { opacity?: number }) {
     const chars = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ0123456789ABCDEF{};</>$#&*";
 
     const draw = () => {
-      ctx.fillStyle = "rgba(10, 14, 10, 0.08)";
+      ctx.fillStyle = "rgba(10, 14, 19, 0.1)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-      ctx.fillStyle = `rgba(0, 255, 65, ${opacity})`;
+      ctx.fillStyle = `rgba(110, 231, 183, ${opacity})`;
       ctx.font = `${charSize}px JetBrains Mono, monospace`;
 
       for (let i = 0; i < columns.length; i++) {

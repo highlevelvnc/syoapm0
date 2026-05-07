@@ -29,14 +29,14 @@ export function gradeColor(grade: Grade): string {
   switch (grade) {
     case "A+":
     case "A":
-      return "#00FF41";
+      return "#10b981";
     case "B":
-      return "#7AFFA0";
+      return "#34d399";
     case "C":
-      return "#FFB300";
+      return "#f59e0b";
     case "D":
-      return "#FF9933";
+      return "#f97316";
     case "F":
-      return "#FF3344";
+      return "#ef4444";
   }
 }

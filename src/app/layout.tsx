@@ -34,7 +34,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-PT" className={mono.variable}>
-      <body className="bg-ink-900 text-matrix-100 min-h-screen">{children}</body>
+      <body className="bg-ink-900 text-ink-300 min-h-screen">{children}</body>
     </html>
   );
 }
