@@ -1,9 +1,16 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { MatrixRain } from "@/components/matrix-rain";
 import { TerminalBoot } from "@/components/terminal-boot";
 import { CookieDemo } from "@/components/cookie-demo";
 import { PublicScanForm } from "@/components/public-scan-form";
+import { InstallGuide } from "@/components/install-guide";
+import { Pricing } from "@/components/pricing";
+import { Faq } from "@/components/faq";
+import { StatsCounter } from "@/components/stats-counter";
 import { APP_NAME } from "@/lib/constants";
+
+export const dynamic = "force-dynamic";
 
 export default function HomePage() {
   return (
@@ -20,7 +27,8 @@ export default function HomePage() {
           <div className="flex items-center gap-2 text-xs">
             <Link href="/test" className="btn-ghost hidden sm:inline-flex">test grátis</Link>
             <a href="#how" className="btn-ghost hidden sm:inline-flex">como funciona</a>
-            <a href="#roadmap" className="btn-ghost hidden sm:inline-flex">roadmap</a>
+            <a href="#pricing" className="btn-ghost hidden sm:inline-flex">pricing</a>
+            <a href="#faq" className="btn-ghost hidden sm:inline-flex">faq</a>
             <Link href="/auth/login" className="btn-matrix-solid">entrar →</Link>
           </div>
         </div>
@@ -42,7 +50,7 @@ export default function HomePage() {
           <Link href="/auth/signup" className="btn-matrix-solid">
             $ começar — grátis
           </Link>
-          <a href="#demo" className="btn-matrix">ver demo ↓</a>
+          <a href="#how" className="btn-matrix">como funciona ↓</a>
         </div>
 
         <div className="mt-10 pt-8 border-t border-matrix-900">
@@ -51,32 +59,47 @@ export default function HomePage() {
           </div>
           <PublicScanForm size="lg" />
         </div>
-
-        <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-3xl">
-          <Stat label="Sites protegidos" value="∞" hint="(no plano free)" />
-          <Stat label="Compliance" value="RGPD · LGPD" />
-          <Stat label="Widget" value="<3 KB" hint="vanilla JS" />
-        </div>
       </section>
 
-      {/* DEMO */}
+      {/* STATS COUNTER */}
+      <section className="border-t border-matrix-900 py-10 bg-ink-800/30">
+        <Suspense fallback={null}>
+          <StatsCounter />
+        </Suspense>
+      </section>
+
+      {/* HOW */}
+      <section id="how" className="max-w-6xl mx-auto px-6 py-20">
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
+          // como funciona
+        </div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-10">
+          live em <span className="text-matrix-500 text-glow">30 segundos</span>.
+        </h2>
+        <InstallGuide />
+      </section>
+
+      {/* DEMO BANNER */}
       <section id="demo" className="border-t border-matrix-900 bg-ink-800/40 py-20">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-            // 01 · cola 1 linha em qualquer site
+            // banner em acção
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-8">demo do banner</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-8">demo do cookie banner</h2>
           <div className="grid lg:grid-cols-2 gap-8 items-start">
             <div>
               <pre className="terminal-card p-4 text-xs sm:text-sm overflow-x-auto">
 {`<script
-  src="https://blindai.app/cdn/w.js"
-  data-site="<O-TEU-SITE-ID>"
+  src="https://syoapm0.vercel.app/cdn/w.js"
+  data-site="<O-TEU-ID>"
+  data-lang="pt-PT"
   async
 ></script>`}
               </pre>
               <p className="mt-4 text-sm text-matrix-200/60">
-                Detecta língua via <code className="text-matrix-500">navigator.language</code>, mostra o banner e regista o consent. O log persiste 12 meses (exigência RGPD).
+                Detecta língua via <code className="text-matrix-500">data-lang</code> ou{" "}
+                <code className="text-matrix-500">navigator.language</code>. Banner persiste 12 meses (RGPD).
+                Histórico de consents na DB para auditoria legal.
               </p>
             </div>
             <CookieDemo />
@@ -84,40 +107,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HOW */}
-      <section id="how" className="max-w-6xl mx-auto px-6 py-20">
-        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-          // 02 · como funciona
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-10">
-          4 passos. zero código complexo.
+      {/* PRICING */}
+      <section id="pricing" className="max-w-6xl mx-auto px-6 py-20">
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// pricing</div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-2">
+          começa grátis. paga quando escalares.
         </h2>
-        <ol className="grid md:grid-cols-2 gap-4">
-          <Step n="01" title="adiciona o teu site" desc="domain + nome. recebes site_id único." />
-          <Step n="02" title='cola 1 linha no <head>' desc="snippet leve (~3KB). funciona em qualquer stack." />
-          <Step n="03" title="recolhe consents + monitora" desc="histórico completo guardado, pronto para auditoria legal." />
-          <Step n="04" title="recebe alertas" desc="telegram, email ou discord quando algo está mal." />
-        </ol>
+        <p className="text-sm text-matrix-200/70 mb-10 max-w-2xl">
+          Free para sempre nos primeiros 100 utilizadores. Pro e Agency lançam quando o produto estabilizar.
+        </p>
+        <Pricing />
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="border-t border-matrix-900 py-20 bg-ink-800/30">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// faq</div>
+          <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-10">perguntas frequentes</h2>
+          <Faq />
+        </div>
       </section>
 
       {/* ROADMAP */}
-      <section id="roadmap" className="border-t border-matrix-900 py-20 bg-ink-800/30">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-            // 03 · roadmap pública
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-10">
-            a construir-se em fases.
-          </h2>
-          <ul className="space-y-3 max-w-3xl">
-            <Roadmap v="v0.1" t="cookie banner RGPD/LGPD universal" status="active" />
-            <Roadmap v="v0.2" t="security scanner: SSL labs + headers + DNS + lighthouse" status="next" />
-            <Roadmap v="v0.3" t="anti-phishing & typosquatting monitor" status="planned" />
-            <Roadmap v="v0.4" t="vulnerability scanner (CVEs em deps via dependabot)" status="planned" />
-            <Roadmap v="v0.5" t="privacy policy / DPA generator por país" status="planned" />
-            <Roadmap v="v1.0" t="dashboard gamificado: XP, achievements, leaderboard" status="planned" />
-          </ul>
-        </div>
+      <section id="roadmap" className="max-w-6xl mx-auto px-6 py-20">
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// roadmap pública</div>
+        <h2 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-10">
+          construído ao vivo. acompanha.
+        </h2>
+        <ul className="space-y-3 max-w-3xl">
+          <Roadmap v="v0.1" t="cookie banner RGPD/LGPD universal · widget vanilla JS" status="done" />
+          <Roadmap v="v0.2" t="security scanner: SSL + headers + DNS + exposure" status="done" />
+          <Roadmap v="v0.3" t="anti-phishing & typosquatting monitor" status="done" />
+          <Roadmap v="v0.4" t="cloudflare orchestrator (WAF, DNSSEC, Bot Fight)" status="done" />
+          <Roadmap v="v0.5" t="public scan API (free, sem signup)" status="done" />
+          <Roadmap v="v0.6" t="email alerts (Resend) + GitHub Dependabot CVE scan" status="next" />
+          <Roadmap v="v1.0" t="dashboard gamificado: XP, leaderboard, achievements desbloqueáveis" status="planned" />
+          <Roadmap v="v1.1" t="privacy policy / DPA generator por país" status="planned" />
+        </ul>
       </section>
 
       {/* FOOTER */}
@@ -125,10 +151,13 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-matrix-700 flex items-center gap-2">
             <span className="text-matrix-500">▊</span>
-            <span>{APP_NAME} · 100% defensivo · free tier para sempre</span>
+            <span>{APP_NAME} · 100% defensivo</span>
           </div>
-          <div className="text-[10px] text-matrix-700 uppercase tracking-wider">
-            built in lisbon · 2026
+          <div className="flex items-center gap-4 text-[10px] text-matrix-700 uppercase tracking-wider">
+            <Link href="/test" className="hover:text-matrix-300">test scan</Link>
+            <Link href="/auth/login" className="hover:text-matrix-300">login</Link>
+            <a href="https://github.com/highlevelvnc/syoapm0" target="_blank" rel="noopener noreferrer" className="hover:text-matrix-300">github</a>
+            <span>built in lisbon · 2026</span>
           </div>
         </div>
       </footer>
@@ -136,29 +165,9 @@ export default function HomePage() {
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
-  return (
-    <div className="terminal-card p-4">
-      <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-matrix-100">{value}</div>
-      {hint && <div className="text-xs text-matrix-700 mt-0.5">{hint}</div>}
-    </div>
-  );
-}
-
-function Step({ n, title, desc }: { n: string; title: string; desc: string }) {
-  return (
-    <li className="terminal-card p-5">
-      <div className="text-matrix-500 text-xs">[{n}]</div>
-      <div className="mt-2 text-matrix-50 font-bold">{title}</div>
-      <div className="mt-1 text-sm text-matrix-200/70">{desc}</div>
-    </li>
-  );
-}
-
-function Roadmap({ v, t, status }: { v: string; t: string; status: "active" | "next" | "planned" }) {
+function Roadmap({ v, t, status }: { v: string; t: string; status: "done" | "next" | "planned" }) {
   const map = {
-    active: { label: "live", cls: "badge-ok" },
+    done: { label: "done", cls: "badge-ok" },
     next: { label: "in-progress", cls: "badge-warn" },
     planned: { label: "planned", cls: "badge-muted" },
   } as const;
