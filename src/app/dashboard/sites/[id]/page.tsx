@@ -1,0 +1,167 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { APP_URL } from "@/lib/constants";
+import { fmtNumber, fmtDate } from "@/lib/utils";
+import { SnippetDisplay } from "@/components/snippet-display";
+
+export const dynamic = "force-dynamic";
+
+export default async function SitePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data: site } = await supabase
+    .from("sites")
+    .select("id, domain, name, theme_color, lang_default, badge_enabled, created_at")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!site) notFound();
+
+  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const { count: total30d } = await supabase
+    .from("consents")
+    .select("id", { count: "exact", head: true })
+    .eq("site_id", site.id)
+    .gte("created_at", since);
+
+  const { data: recent } = await supabase
+    .from("consents")
+    .select("id, action, lang, necessary, functional, analytics, marketing, created_at")
+    .eq("site_id", site.id)
+    .order("created_at", { ascending: false })
+    .limit(20);
+
+  const { data: actionRows } = await supabase
+    .from("consents")
+    .select("action")
+    .eq("site_id", site.id)
+    .gte("created_at", since);
+
+  const actionCounts = (actionRows ?? []).reduce<Record<string, number>>((acc, r) => {
+    acc[r.action] = (acc[r.action] || 0) + 1;
+    return acc;
+  }, {});
+
+  const total = total30d ?? 0;
+  const acceptRate = total > 0 ? Math.round(((actionCounts.accept_all ?? 0) / total) * 100) : 0;
+
+  return (
+    <main className="max-w-6xl mx-auto px-6 py-10">
+      <Link href="/dashboard" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
+        ← dashboard
+      </Link>
+      <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// site.detail</div>
+      <div className="flex items-center justify-between gap-4 mb-1 flex-wrap">
+        <h1 className="text-3xl font-bold text-matrix-50">{site.name}</h1>
+        <span className="badge-ok">live</span>
+      </div>
+      <div className="text-sm text-matrix-700 mb-8">{site.domain}</div>
+
+      <div className="grid sm:grid-cols-3 gap-4 mb-8">
+        <Stat label="consents (30d)" value={fmtNumber(total)} />
+        <Stat label="accept rate" value={`${acceptRate}%`} />
+        <Stat label="criado" value={fmtDate(site.created_at).split(",")[0]} />
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        <div>
+          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
+            // 01 · snippet — cola em qualquer site
+          </div>
+          <SnippetDisplay siteId={site.id} apiBase={APP_URL} />
+        </div>
+        <div>
+          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
+            // 02 · breakdown (30d)
+          </div>
+          <div className="terminal-card p-5 space-y-3">
+            <BreakdownRow label="accept_all" count={actionCounts.accept_all ?? 0} total={total} />
+            <BreakdownRow label="reject_all" count={actionCounts.reject_all ?? 0} total={total} />
+            <BreakdownRow label="custom" count={actionCounts.custom ?? 0} total={total} />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
+          // 03 · log recente
+        </div>
+        <div className="terminal-card overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-[10px] uppercase tracking-wider text-matrix-700 border-b border-matrix-900">
+              <tr>
+                <th className="text-left p-3">timestamp</th>
+                <th className="text-left p-3">action</th>
+                <th className="text-left p-3">lang</th>
+                <th className="text-left p-3">choices</th>
+              </tr>
+            </thead>
+            <tbody className="font-mono text-xs">
+              {recent && recent.length > 0 ? (
+                recent.map((r) => (
+                  <tr key={r.id} className="border-b border-matrix-900/40 hover:bg-matrix-900/10">
+                    <td className="p-3 text-matrix-200 whitespace-nowrap">{fmtDate(r.created_at)}</td>
+                    <td className="p-3">
+                      <span className={actionBadge(r.action)}>{r.action}</span>
+                    </td>
+                    <td className="p-3 text-matrix-700">{r.lang}</td>
+                    <td className="p-3 text-matrix-200/70">
+                      {[
+                        r.necessary && "necessary",
+                        r.functional && "functional",
+                        r.analytics && "analytics",
+                        r.marketing && "marketing",
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} className="p-6 text-center text-matrix-700">
+                    sem consents ainda. cola o snippet num site para começar.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function actionBadge(action: string) {
+  if (action === "accept_all") return "badge-ok";
+  if (action === "reject_all") return "badge-warn";
+  return "badge-muted";
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="terminal-card p-4">
+      <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
+      <div className="mt-1 text-2xl font-bold text-matrix-100">{value}</div>
+    </div>
+  );
+}
+
+function BreakdownRow({ label, count, total }: { label: string; count: number; total: number }) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return (
+    <div>
+      <div className="flex items-baseline justify-between text-xs mb-1">
+        <span className="text-matrix-200/70 font-mono">{label}</span>
+        <span className="text-matrix-100 font-bold">
+          {fmtNumber(count)} <span className="text-matrix-700">· {pct}%</span>
+        </span>
+      </div>
+      <div className="h-1 bg-matrix-900/40 rounded overflow-hidden">
+        <div className="h-full bg-matrix-500 transition-all" style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
