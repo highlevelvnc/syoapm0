@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "BlindAI — Security Score",
+  "version": "0.1.0",
+  "description": "Free security score for any site you visit. SSL, headers, DNS, exposure, anti-phishing — em segundos.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "BlindAI Security Score"
+  },
+  "permissions": ["activeTab"],
+  "homepage_url": "https://syoapm0.vercel.app"
+}

@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    width: 340px;
+    margin: 0;
+    padding: 18px;
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    background: #0a0e13;
+    color: #c9d0db;
+    font-size: 13px;
+  }
+  h1 {
+    font-size: 14px;
+    color: #e6eaf0;
+    margin: 0 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  h1 .logo {
+    color: #10b981;
+    font-size: 18px;
+    text-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+  }
+  .meta {
+    font-size: 10px;
+    color: #4a5462;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 12px 0 6px;
+  }
+  .domain {
+    font-size: 13px;
+    color: #e6eaf0;
+    word-break: break-all;
+    padding: 10px 12px;
+    background: #131820;
+    border: 1px solid #1c2330;
+    border-radius: 4px;
+    line-height: 1.4;
+  }
+  .score-area {
+    margin: 16px 0;
+    padding: 14px;
+    background: #131820;
+    border: 1px solid #1c2330;
+    border-radius: 4px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .score-num {
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-grade {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .score-meta {
+    font-size: 10px;
+    color: #4a5462;
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .loading {
+    font-size: 11px;
+    color: #4a5462;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .loading::after {
+    content: "▊";
+    animation: blink 1s step-end infinite;
+    color: #10b981;
+    margin-left: 4px;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  button {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 700;
+    font-family: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 8px;
+    transition: background 0.12s ease;
+  }
+  button.primary {
+    background: #10b981;
+    color: #06080a;
+  }
+  button.primary:hover { background: #34d399; }
+  button.secondary {
+    background: transparent;
+    color: #c9d0db;
+    border: 1px solid #2a3340;
+  }
+  button.secondary:hover {
+    background: #131820;
+    border-color: #4a5462;
+  }
+  .footer {
+    font-size: 9px;
+    color: #4a5462;
+    text-align: center;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #1c2330;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <h1><span class="logo">▊</span> BlindAI</h1>
+  <div class="meta">// security score for</div>
+  <div class="domain" id="domain">…</div>
+  <div class="score-area" id="score-area">
+    <div class="loading">a procurar cache</div>
+  </div>
+  <button class="primary" id="scan-btn">$ ver report completo →</button>
+  <button class="secondary" id="dashboard-btn">$ dashboard ↗</button>
+  <div class="footer">free · sem signup · 24h cache compartilhado</div>
+  <script src="popup.js"></script>
+</body>
+</html>
