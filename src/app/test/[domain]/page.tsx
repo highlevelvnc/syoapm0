@@ -67,9 +67,9 @@ export default async function TestDomainPage({
   return (
     <main className="min-h-screen relative">
       <div className="grid-bg fixed inset-0 -z-10 opacity-50" aria-hidden />
-      <nav className="border-b border-matrix-900 bg-ink-900/70 backdrop-blur sticky top-0 z-30">
+      <nav className="border-b border-ink-700 bg-ink-900/70 backdrop-blur sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-matrix-50 font-bold tracking-wider">
+          <Link href="/" className="flex items-center gap-2 text-ink-50 font-bold tracking-wider">
             <span className="text-matrix-500 text-glow">▊</span>
             <span>{APP_NAME}</span>
           </Link>
@@ -85,11 +85,11 @@ export default async function TestDomainPage({
       </nav>
 
       <section className="max-w-4xl mx-auto px-6 py-10">
-        <Link href="/test" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
+        <Link href="/test" className="text-xs text-ink-500 hover:text-matrix-300 mb-4 inline-block">
           ← outro site
         </Link>
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// public scan</div>
-        <h1 className="text-3xl sm:text-4xl font-bold text-matrix-50 mb-2 break-all">{domain}</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-ink-50 mb-2 break-all">{domain}</h1>
 
         <div className="mt-8">
           <Suspense fallback={<ScanProgress domain={domain} />}>
@@ -97,7 +97,7 @@ export default async function TestDomainPage({
           </Suspense>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-matrix-900">
+        <div className="mt-12 pt-8 border-t border-ink-700">
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3 text-center">
             // testa outro site
           </div>
@@ -127,10 +127,10 @@ async function ScanRunner({ domain }: { domain: string }) {
             <div className="text-xs uppercase tracking-wider text-yellow-300 mb-2">
               // rate limit
             </div>
-            <div className="text-matrix-50 font-bold text-lg mb-2">
+            <div className="text-ink-50 font-bold text-lg mb-2">
               demasiados scans recentes deste IP ({recent} na última hora)
             </div>
-            <p className="text-sm text-matrix-200/70 mb-4">
+            <p className="text-sm text-ink-300/70 mb-4">
               Espera ~1 hora ou cria conta grátis para scans ilimitados nos teus sites.
             </p>
             <Link href="/auth/signup" className="btn-matrix-solid">
@@ -152,9 +152,9 @@ async function ScanRunner({ domain }: { domain: string }) {
       return (
         <div className="terminal-card p-8 text-center max-w-2xl mx-auto">
           <div className="text-xs uppercase tracking-wider text-red-400 mb-2">// scan falhou</div>
-          <div className="text-matrix-50 font-bold mb-2">não consegui scannear {domain}</div>
-          <p className="text-sm text-matrix-200/70 mb-4">{msg}</p>
-          <p className="text-[10px] text-matrix-700">
+          <div className="text-ink-50 font-bold mb-2">não consegui scannear {domain}</div>
+          <p className="text-sm text-ink-300/70 mb-4">{msg}</p>
+          <p className="text-[10px] text-ink-500">
             verifica que o domínio está online e a responder em HTTPS.
           </p>
         </div>

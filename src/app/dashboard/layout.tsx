@@ -13,23 +13,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <div className="min-h-screen flex flex-col grid-bg">
-      <nav className="border-b border-matrix-900 bg-ink-900/85 backdrop-blur sticky top-0 z-30">
+      <nav className="border-b border-ink-700 bg-ink-900/85 backdrop-blur sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-matrix-50 font-bold tracking-wider"
+              className="flex items-center gap-2 text-ink-50 font-bold tracking-wider"
             >
               <span className="text-matrix-500 text-glow">▊</span>
               <span>{APP_NAME}</span>
             </Link>
-            <div className="text-xs text-matrix-700 hidden sm:block">/ dashboard</div>
+            <div className="text-xs text-ink-500 hidden sm:block">/ dashboard</div>
           </div>
           <div className="flex items-center gap-3 text-xs">
             <Link href="/dashboard/settings" className="btn-ghost hidden sm:inline-flex">
               $ settings
             </Link>
-            <span className="hidden md:inline text-matrix-700 truncate max-w-[200px]">{user.email}</span>
+            <span className="hidden md:inline text-ink-500 truncate max-w-[200px]">{user.email}</span>
             <SignOutButton />
           </div>
         </div>

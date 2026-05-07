@@ -67,7 +67,7 @@ export default async function DashboardPage() {
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">
             // dashboard.overview
           </div>
-          <h1 className="text-3xl font-bold text-matrix-50">os teus sites</h1>
+          <h1 className="text-3xl font-bold text-ink-50">os teus sites</h1>
         </div>
         <Link href="/dashboard/sites/new" className="btn-matrix-solid">
           + adicionar site
@@ -105,8 +105,8 @@ export default async function DashboardPage() {
                   <div className="flex items-center gap-4 min-w-0 flex-1">
                     <span style={{ color: s.theme_color }}>▊</span>
                     <div className="min-w-0">
-                      <div className="text-matrix-50 font-bold truncate">{s.name}</div>
-                      <div className="text-xs text-matrix-700 mt-1 truncate">{s.domain}</div>
+                      <div className="text-ink-50 font-bold truncate">{s.name}</div>
+                      <div className="text-xs text-ink-500 mt-1 truncate">{s.domain}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-4 shrink-0">
@@ -131,7 +131,7 @@ function ScoreCell({
   scan: { id: string; score: number | null; grade: Grade | null; status: string } | undefined;
 }) {
   if (!scan) {
-    return <span className="text-[10px] text-matrix-700 uppercase tracking-wider">no scan</span>;
+    return <span className="text-[10px] text-ink-500 uppercase tracking-wider">no scan</span>;
   }
   if (scan.status === "running" || scan.status === "pending") {
     return <span className="text-[10px] text-matrix-300 uppercase tracking-wider animate-pulse">scanning</span>;
@@ -164,12 +164,12 @@ function Stat({
   tone?: "default" | "ok" | "danger";
 }) {
   const valueClass =
-    tone === "danger" ? "text-red-400" : tone === "ok" ? "text-matrix-300" : "text-matrix-100";
+    tone === "danger" ? "text-red-400" : tone === "ok" ? "text-matrix-300" : "text-ink-100";
   return (
     <div className="terminal-card p-4">
-      <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-ink-500">{label}</div>
       <div className={`mt-1 text-2xl font-bold ${valueClass}`}>{value}</div>
-      {hint && <div className="text-xs text-matrix-700 mt-0.5">{hint}</div>}
+      {hint && <div className="text-xs text-ink-500 mt-0.5">{hint}</div>}
     </div>
   );
 }
@@ -178,8 +178,8 @@ function EmptyState() {
   return (
     <div className="terminal-card p-12 text-center">
       <div className="text-matrix-500 text-sm mb-3">// nenhum site adicionado</div>
-      <h3 className="text-matrix-50 font-bold text-lg mb-2">começa agora.</h3>
-      <p className="text-matrix-200/70 text-sm mb-6 max-w-md mx-auto">
+      <h3 className="text-ink-50 font-bold text-lg mb-2">começa agora.</h3>
+      <p className="text-ink-300/70 text-sm mb-6 max-w-md mx-auto">
         Adiciona o teu primeiro site e recebe um snippet pronto a colar. Em 30 segundos tens compliance RGPD.
       </p>
       <Link href="/dashboard/sites/new" className="btn-matrix-solid">

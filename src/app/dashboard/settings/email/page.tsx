@@ -22,31 +22,31 @@ export default async function EmailSettingsPage() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
-      <Link href="/dashboard/settings" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
+      <Link href="/dashboard/settings" className="text-xs text-ink-500 hover:text-matrix-300 mb-4 inline-block">
         ← settings
       </Link>
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// settings.email</div>
-      <h1 className="text-3xl font-bold text-matrix-50 mb-2">email alerts</h1>
-      <p className="text-sm text-matrix-200/70 mb-8 max-w-2xl">
+      <h1 className="text-3xl font-bold text-ink-50 mb-2">email alerts</h1>
+      <p className="text-sm text-ink-300/70 mb-8 max-w-2xl">
         Recebe email automático quando: scan encontra critical/high findings, novo phishing variant detectado,
         achievement desbloqueado, SSL prestes a expirar.
       </p>
 
       <EmailForm connected={!!channel} currentEmail={currentEmail} />
 
-      <div className="terminal-card p-5 mt-8 text-xs text-matrix-200/70 space-y-2">
+      <div className="terminal-card p-5 mt-8 text-xs text-ink-300/70 space-y-2">
         <div className="text-matrix-500 uppercase tracking-wider text-[10px] mb-2">// setup técnico</div>
         <p>
           Os emails são enviados via{" "}
-          <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-matrix-300 hover:text-matrix-100 underline">
+          <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-matrix-300 hover:text-ink-100 underline">
             Resend
           </a>{" "}
           (free tier, 3000/mês). Para activar a entrega real:
         </p>
-        <ol className="space-y-1 list-decimal list-inside text-matrix-700">
+        <ol className="space-y-1 list-decimal list-inside text-ink-500">
           <li>
             Cria conta em{" "}
-            <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-matrix-300 hover:text-matrix-100 underline">
+            <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-matrix-300 hover:text-ink-100 underline">
               resend.com
             </a>{" "}
             e copia API key
@@ -56,7 +56,7 @@ export default async function EmailSettingsPage() {
           </li>
           <li>Redeploy</li>
         </ol>
-        <p className="pt-2 border-t border-matrix-900 mt-2 text-matrix-700">
+        <p className="pt-2 border-t border-ink-700 mt-2 text-ink-500">
           Sem domínio próprio, o sender é <code>onboarding@resend.dev</code>. Para usar
           <code> alerts@blindai.app</code> ou similar, verifica o domínio no Resend.
         </p>

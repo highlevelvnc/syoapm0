@@ -47,7 +47,7 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
       <div className="terminal-card p-8">
         <div className="flex items-center justify-between gap-6 flex-wrap">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-matrix-700 mb-1">
+            <div className="text-[10px] uppercase tracking-wider text-ink-500 mb-1">
               security score · {scan.domain}
             </div>
             <div
@@ -70,7 +70,7 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
             {grade}
           </div>
         </div>
-        <div className="mt-6 pt-6 border-t border-matrix-900 grid sm:grid-cols-4 gap-4 text-xs">
+        <div className="mt-6 pt-6 border-t border-ink-700 grid sm:grid-cols-4 gap-4 text-xs">
           <Stat label="critical" value={fmtNumber(scan.critical_findings)} tone={scan.critical_findings > 0 ? "danger" : "muted"} />
           <Stat label="high" value={fmtNumber(scan.high_findings)} tone={scan.high_findings > 0 ? "danger" : "muted"} />
           <Stat label="medium" value={fmtNumber(scan.medium_findings)} tone={scan.medium_findings > 0 ? "warn" : "muted"} />
@@ -91,16 +91,16 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
                   <span className="text-xs uppercase tracking-wider text-matrix-300">
                     {CATEGORY_INFO[cat].label}
                   </span>
-                  <span className="text-[10px] text-matrix-700 ml-2">
+                  <span className="text-[10px] text-ink-500 ml-2">
                     {CATEGORY_INFO[cat].description}
                   </span>
                 </div>
                 <span className="text-sm font-bold tabular-nums" style={{ color: gradeColor(catGrade) }}>
                   {catScore}
-                  <span className="text-matrix-700 ml-1 text-xs">/100</span>
+                  <span className="text-ink-500 ml-1 text-xs">/100</span>
                 </span>
               </div>
-              <div className="h-1.5 bg-matrix-900/40 rounded overflow-hidden">
+              <div className="h-1.5 bg-ink-800/60 rounded overflow-hidden">
                 <div
                   className="h-full transition-all"
                   style={{ width: `${catScore}%`, background: gradeColor(catGrade) }}
@@ -122,12 +122,12 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
               <li key={i} className="terminal-card p-4">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
                   <span className={SEVERITY_BADGE[issue.severity]}>{issue.severity}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-matrix-700">
+                  <span className="text-[10px] uppercase tracking-wider text-ink-500">
                     {CATEGORY_INFO[issue.category].label}
                   </span>
-                  <code className="text-[10px] text-matrix-700">{issue.code}</code>
+                  <code className="text-[10px] text-ink-500">{issue.code}</code>
                 </div>
-                <div className="text-matrix-50 font-bold text-sm">{issue.title}</div>
+                <div className="text-ink-50 font-bold text-sm">{issue.title}</div>
               </li>
             ))}
           </ul>
@@ -142,7 +142,7 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
             {tech.map((t) => (
               <span
                 key={t}
-                className="text-[11px] font-mono px-2 py-1 border border-matrix-900 rounded text-matrix-300 bg-ink-800/40"
+                className="text-[11px] font-mono px-2 py-1 border border-ink-700 rounded text-matrix-300 bg-ink-800/40"
               >
                 {t}
               </span>
@@ -152,12 +152,12 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
       )}
 
       {/* CTA SIGNUP */}
-      <div className="terminal-card p-6 border-matrix-500/30 bg-matrix-900/10">
+      <div className="terminal-card p-6 border-matrix-500/30 bg-matrix-500/5">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// quer mais?</div>
-        <h3 className="text-matrix-50 font-bold text-lg mb-2">
+        <h3 className="text-ink-50 font-bold text-lg mb-2">
           report completo + monitor diário + alerts
         </h3>
-        <p className="text-sm text-matrix-200/70 mb-4 max-w-2xl">
+        <p className="text-sm text-ink-300/70 mb-4 max-w-2xl">
           Cria conta grátis (≤100 sites) para ver: descrição completa de cada finding, recomendações
           step-by-step de como fixar, scan diário automático, achievements, banner RGPD/LGPD universal,
           e Cloudflare orchestrator.
@@ -176,7 +176,7 @@ export function PublicResult({ scan }: { scan: PublicScanRow }) {
       <ShareRow domain={scan.domain} score={score} grade={grade} />
 
       {/* META */}
-      <div className="text-[10px] text-matrix-700 text-center">
+      <div className="text-[10px] text-ink-500 text-center">
         scan: {fmtDate(scan.created_at)}
         {scan.duration_ms ? ` · ${(scan.duration_ms / 1000).toFixed(1)}s` : ""} · próximo refresh em ~24h
       </div>
@@ -194,10 +194,10 @@ function Stat({
   tone?: "default" | "muted" | "warn" | "danger";
 }) {
   const colorClass =
-    tone === "danger" ? "text-red-400" : tone === "warn" ? "text-yellow-300" : tone === "muted" ? "text-matrix-700" : "text-matrix-100";
+    tone === "danger" ? "text-red-400" : tone === "warn" ? "text-yellow-300" : tone === "muted" ? "text-ink-500" : "text-ink-100";
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-ink-500">{label}</div>
       <div className={`text-2xl font-bold ${colorClass} mt-0.5`}>{value}</div>
     </div>
   );

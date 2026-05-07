@@ -26,11 +26,11 @@ export function AchievementsGrid({ earned }: { earned: DBAchievement[] }) {
             }`}
             title={def.description}
           >
-            <div className={`font-bold text-sm ${isEarned ? "text-matrix-500" : "text-matrix-700"}`}>
+            <div className={`font-bold text-sm ${isEarned ? "text-matrix-500" : "text-ink-500"}`}>
               {def.icon}
             </div>
-            <div className="text-matrix-50 font-bold text-xs mt-2 truncate">{def.title}</div>
-            <div className="text-[10px] text-matrix-700 mt-1 line-clamp-2">{def.description}</div>
+            <div className="text-ink-50 font-bold text-xs mt-2 truncate">{def.title}</div>
+            <div className="text-[10px] text-ink-500 mt-1 line-clamp-2">{def.description}</div>
           </div>
         );
       })}

@@ -80,7 +80,7 @@ export function EmailForm({ connected, currentEmail }: Props) {
             className="input-matrix"
             disabled={busy}
           />
-          <p className="text-[10px] text-matrix-700 mt-2">
+          <p className="text-[10px] text-ink-500 mt-2">
             Alerts via Resend. Sender: <code>onboarding@resend.dev</code>. Verifica spam folder na primeira vez.
           </p>
         </div>
@@ -101,10 +101,10 @@ export function EmailForm({ connected, currentEmail }: Props) {
       <div className="terminal-card p-5 flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-matrix-50 font-bold">email alerts active</span>
+            <span className="text-ink-50 font-bold">email alerts active</span>
             <span className="badge-ok">enabled</span>
           </div>
-          <div className="text-xs text-matrix-700">{currentEmail}</div>
+          <div className="text-xs text-ink-500">{currentEmail}</div>
         </div>
         <div className="flex gap-2 flex-wrap">
           <button

@@ -17,7 +17,7 @@ export function InstallGuide() {
         title="cola 1 linha no <head>"
         time="10s"
         body={
-          <pre className="text-[10px] sm:text-xs text-matrix-200 mt-2 bg-ink-950 border border-matrix-900 rounded p-2 overflow-x-auto">
+          <pre className="text-[10px] sm:text-xs text-ink-300 mt-2 bg-ink-950 border border-ink-700 rounded p-2 overflow-x-auto">
 {`<script
   src="https://syoapm0.vercel.app/cdn/w.js"
   data-site="<O-TEU-ID>"
@@ -56,10 +56,10 @@ function Step({
     <div className="terminal-card p-5">
       <div className="flex items-baseline justify-between mb-2">
         <span className="text-matrix-500 font-bold text-xs">[{n}]</span>
-        <span className="text-[10px] text-matrix-700 uppercase tracking-wider">{time}</span>
+        <span className="text-[10px] text-ink-500 uppercase tracking-wider">{time}</span>
       </div>
-      <div className="text-matrix-50 font-bold mb-2">{title}</div>
-      <div className="text-xs text-matrix-200/70">{body}</div>
+      <div className="text-ink-50 font-bold mb-2">{title}</div>
+      <div className="text-xs text-ink-300/70">{body}</div>
     </div>
   );
 }

@@ -35,8 +35,8 @@ export function FindingsList({ findings }: { findings: DBFinding[] }) {
     return (
       <div className="terminal-card p-8 text-center">
         <div className="text-matrix-500 text-xs uppercase tracking-wider mb-2">// zero issues</div>
-        <div className="text-matrix-50 font-bold text-lg mb-1">tudo limpo.</div>
-        <p className="text-matrix-200/60 text-sm">Nenhuma vulnerabilidade detectada no último scan.</p>
+        <div className="text-ink-50 font-bold text-lg mb-1">tudo limpo.</div>
+        <p className="text-ink-300/60 text-sm">Nenhuma vulnerabilidade detectada no último scan.</p>
       </div>
     );
   }
@@ -52,21 +52,21 @@ export function FindingsList({ findings }: { findings: DBFinding[] }) {
           <div key={sev}>
             <div className="text-[10px] uppercase tracking-wider text-matrix-500 mb-2 flex items-baseline gap-2">
               <span>// {sev}</span>
-              <span className="text-matrix-700">[{group.length}]</span>
+              <span className="text-ink-500">[{group.length}]</span>
             </div>
             <ul className="space-y-2">
               {group.map((f) => (
                 <li key={f.id} className="terminal-card p-4">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
                     <span className={SEVERITY_BADGE[f.severity]}>{f.severity}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-matrix-700">
+                    <span className="text-[10px] uppercase tracking-wider text-ink-500">
                       {CATEGORY_LABEL[f.category]}
                     </span>
-                    <code className="text-[10px] text-matrix-700">{f.code}</code>
+                    <code className="text-[10px] text-ink-500">{f.code}</code>
                   </div>
-                  <div className="text-matrix-50 font-bold text-sm">{f.title}</div>
+                  <div className="text-ink-50 font-bold text-sm">{f.title}</div>
                   {f.description && (
-                    <div className="text-xs text-matrix-200/60 mt-1 leading-relaxed">{f.description}</div>
+                    <div className="text-xs text-ink-300/60 mt-1 leading-relaxed">{f.description}</div>
                   )}
                   {f.recommendation && (
                     <div className="text-xs text-matrix-300 mt-2 border-l-2 border-matrix-500/40 pl-3">

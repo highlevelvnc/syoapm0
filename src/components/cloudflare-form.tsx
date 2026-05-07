@@ -85,7 +85,7 @@ export function CloudflareForm({ connected }: { connected: boolean }) {
             className="input-matrix"
             disabled={busy}
           />
-          <p className="text-[10px] text-matrix-700 mt-2">
+          <p className="text-[10px] text-ink-500 mt-2">
             guardado encrypted at rest com AES-256-GCM. nunca volta ao frontend depois.
           </p>
         </div>
@@ -106,10 +106,10 @@ export function CloudflareForm({ connected }: { connected: boolean }) {
       <div className="terminal-card p-5 flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-matrix-50 font-bold">cloudflare conectado</span>
+            <span className="text-ink-50 font-bold">cloudflare conectado</span>
             <span className="badge-ok">active</span>
           </div>
-          <div className="text-xs text-matrix-700">token validado, encrypted-at-rest</div>
+          <div className="text-xs text-ink-500">token validado, encrypted-at-rest</div>
         </div>
         <button onClick={handleDisconnect} disabled={busy} className="btn-ghost">
           $ desconectar
@@ -125,9 +125,9 @@ export function CloudflareForm({ connected }: { connected: boolean }) {
             {error}
           </div>
         )}
-        {!zones && busy && <div className="text-sm text-matrix-700">a carregar zonas...</div>}
+        {!zones && busy && <div className="text-sm text-ink-500">a carregar zonas...</div>}
         {zones && zones.length === 0 && (
-          <div className="terminal-card p-5 text-sm text-matrix-200/60">
+          <div className="terminal-card p-5 text-sm text-ink-300/60">
             nenhuma zona encontrada. adiciona um domínio em Cloudflare primeiro.
           </div>
         )}
@@ -136,13 +136,13 @@ export function CloudflareForm({ connected }: { connected: boolean }) {
             {zones.map((z) => (
               <li key={z.id} className="terminal-card p-4 flex items-center justify-between gap-4 flex-wrap">
                 <div>
-                  <div className="text-matrix-50 font-bold">{z.name}</div>
-                  <div className="text-[10px] text-matrix-700 mt-0.5">
+                  <div className="text-ink-50 font-bold">{z.name}</div>
+                  <div className="text-[10px] text-ink-500 mt-0.5">
                     {z.status} · account: {z.account_name ?? "—"}
                     {z.paused ? " · paused" : ""}
                   </div>
                 </div>
-                <code className="text-[10px] text-matrix-700">{z.id.slice(0, 12)}...</code>
+                <code className="text-[10px] text-ink-500">{z.id.slice(0, 12)}...</code>
               </li>
             ))}
           </ul>

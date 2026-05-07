@@ -51,7 +51,7 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6 grid-bg">
       <div className="terminal-card p-8 w-full max-w-md">
-        <Link href="/" className="text-matrix-50 font-bold text-xl flex items-center gap-2 mb-2">
+        <Link href="/" className="text-ink-50 font-bold text-xl flex items-center gap-2 mb-2">
           <span className="text-matrix-500 text-glow">▊</span>
           <span>{APP_NAME}</span>
         </Link>
@@ -59,8 +59,8 @@ export default function SignupPage() {
 
         {needsConfirm ? (
           <div className="space-y-3">
-            <div className="text-matrix-50 font-bold">verifica o teu email.</div>
-            <p className="text-sm text-matrix-200/70">
+            <div className="text-ink-50 font-bold">verifica o teu email.</div>
+            <p className="text-sm text-ink-300/70">
               Enviámos link de confirmação para{" "}
               <span className="text-matrix-500 break-all">{email}</span>. Clica para activar a conta e fazer login.
             </p>
@@ -98,7 +98,7 @@ export default function SignupPage() {
                 className="input-matrix"
                 disabled={busy}
               />
-              <p className="text-[10px] text-matrix-700 mt-1">mínimo 6 caracteres.</p>
+              <p className="text-[10px] text-ink-500 mt-1">mínimo 6 caracteres.</p>
             </div>
             <div>
               <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">
@@ -125,9 +125,9 @@ export default function SignupPage() {
             >
               {busy ? "$ a criar..." : "$ criar conta →"}
             </button>
-            <div className="text-center text-[10px] text-matrix-700 pt-2">
+            <div className="text-center text-[10px] text-ink-500 pt-2">
               já tens conta?{" "}
-              <Link href="/auth/login" className="text-matrix-300 hover:text-matrix-100 underline">
+              <Link href="/auth/login" className="text-matrix-300 hover:text-ink-100 underline">
                 entrar
               </Link>
             </div>

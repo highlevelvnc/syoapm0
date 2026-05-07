@@ -37,7 +37,7 @@ export function CookieDemo() {
         <div className="text-[10px] uppercase tracking-wider text-matrix-500 mb-2">
           // consent registado · POST /api/v1/consent
         </div>
-        <pre className="text-xs bg-ink-950 border border-matrix-900 p-3 rounded text-matrix-200 overflow-x-auto">
+        <pre className="text-xs bg-ink-950 border border-ink-700 p-3 rounded text-ink-300 overflow-x-auto">
 {`{
   "site_id": "demo",
   "action": "${action}",
@@ -64,8 +64,8 @@ export function CookieDemo() {
       <div className="text-[10px] uppercase tracking-wider text-matrix-500 mb-3">
         // banner.preview · pt-PT · v1
       </div>
-      <h4 className="text-matrix-50 font-bold text-base mb-2">{COPY.title}</h4>
-      <p className="text-sm text-matrix-200/80 mb-4">{COPY.body}</p>
+      <h4 className="text-ink-50 font-bold text-base mb-2">{COPY.title}</h4>
+      <p className="text-sm text-ink-300/80 mb-4">{COPY.body}</p>
       <div className="flex flex-wrap gap-2">
         <button onClick={() => handle("accept_all")} className="btn-matrix-solid">
           {COPY.acceptAll}
@@ -77,7 +77,7 @@ export function CookieDemo() {
           {COPY.custom}
         </button>
       </div>
-      <div className="mt-4 pt-3 border-t border-matrix-faint text-[10px] text-matrix-700 flex items-center justify-between">
+      <div className="mt-4 pt-3 border-t border-matrix-faint text-[10px] text-ink-500 flex items-center justify-between">
         <span>{COPY.poweredBy}</span>
         <span className="text-matrix-500">▊</span>
       </div>

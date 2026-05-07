@@ -89,20 +89,20 @@ export function Pricing() {
           )}
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">{t.name}</div>
           <div className="flex items-baseline gap-1 mb-1">
-            <span className="text-3xl font-bold text-matrix-50">{t.price}</span>
-            {t.cadence && <span className="text-xs text-matrix-700">{t.cadence}</span>}
+            <span className="text-3xl font-bold text-ink-50">{t.price}</span>
+            {t.cadence && <span className="text-xs text-ink-500">{t.cadence}</span>}
           </div>
-          <p className="text-xs text-matrix-200/60 mb-4 min-h-[36px]">{t.pitch}</p>
+          <p className="text-xs text-ink-300/60 mb-4 min-h-[36px]">{t.pitch}</p>
           <ul className="space-y-1.5 mb-6 flex-1">
             {t.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-xs text-matrix-200/80">
+              <li key={f} className="flex items-start gap-2 text-xs text-ink-300/80">
                 <span className="text-matrix-500 mt-0.5 shrink-0">▸</span>
                 <span>{f}</span>
               </li>
             ))}
           </ul>
           {t.cta.disabled ? (
-            <div className="text-center text-[11px] uppercase tracking-wider text-matrix-700 py-2 border border-matrix-900 rounded">
+            <div className="text-center text-[11px] uppercase tracking-wider text-ink-500 py-2 border border-ink-700 rounded">
               {t.cta.label}
             </div>
           ) : (

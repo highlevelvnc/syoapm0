@@ -94,14 +94,17 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-10">
-      <Link href="/dashboard" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
+      <Link href="/dashboard" className="text-xs text-ink-500 hover:text-matrix-300 mb-4 inline-block">
         ← dashboard
       </Link>
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// site.detail</div>
       <div className="flex items-center justify-between gap-4 mb-1 flex-wrap">
-        <h1 className="text-3xl font-bold text-matrix-50">{site.name}</h1>
+        <h1 className="text-3xl font-bold text-ink-50">{site.name}</h1>
         <div className="flex items-center gap-3 flex-wrap">
           <ScanNowButton siteId={site.id} />
+          <Link href={`/dashboard/sites/${site.id}/policy`} className="btn-matrix">
+            privacy policy
+          </Link>
           <a
             href={`/preview/${site.id}`}
             target="_blank"
@@ -113,7 +116,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           <span className="badge-ok">live</span>
         </div>
       </div>
-      <div className="text-sm text-matrix-700 mb-8">{site.domain}</div>
+      <div className="text-sm text-ink-500 mb-8">{site.domain}</div>
 
       {/* SECURITY */}
       <section className="mb-10">
@@ -142,7 +145,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           />
         </div>
         {lastScan?.completed_at && (
-          <div className="text-[10px] text-matrix-700">
+          <div className="text-[10px] text-ink-500">
             último scan: {fmtDate(lastScan.completed_at)} · {findings.length} findings · {criticalHigh} críticos/altos
           </div>
         )}
@@ -157,7 +160,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       <section className="mb-10">
         <div className="flex items-baseline justify-between mb-3">
           <div className="text-xs uppercase tracking-wider text-matrix-500">// achievements</div>
-          <div className="text-[10px] text-matrix-700">
+          <div className="text-[10px] text-ink-500">
             {achievements.length} / {totalAchievements} unlocked
           </div>
         </div>
@@ -201,7 +204,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// consent log recente</div>
         <div className="terminal-card overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-[10px] uppercase tracking-wider text-matrix-700 border-b border-matrix-900">
+            <thead className="text-[10px] uppercase tracking-wider text-ink-500 border-b border-ink-700">
               <tr>
                 <th className="text-left p-3">timestamp</th>
                 <th className="text-left p-3">action</th>
@@ -212,13 +215,13 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
             <tbody className="font-mono text-xs">
               {recent && recent.length > 0 ? (
                 recent.map((r) => (
-                  <tr key={r.id} className="border-b border-matrix-900/40 hover:bg-matrix-900/10">
-                    <td className="p-3 text-matrix-200 whitespace-nowrap">{fmtDate(r.created_at)}</td>
+                  <tr key={r.id} className="border-b border-ink-700/40 hover:bg-matrix-500/5">
+                    <td className="p-3 text-ink-300 whitespace-nowrap">{fmtDate(r.created_at)}</td>
                     <td className="p-3">
                       <span className={actionBadge(r.action)}>{r.action}</span>
                     </td>
-                    <td className="p-3 text-matrix-700">{r.lang}</td>
-                    <td className="p-3 text-matrix-200/70">
+                    <td className="p-3 text-ink-500">{r.lang}</td>
+                    <td className="p-3 text-ink-300/70">
                       {[
                         r.necessary && "necessary",
                         r.functional && "functional",
@@ -232,7 +235,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="p-6 text-center text-matrix-700">
+                  <td colSpan={4} className="p-6 text-center text-ink-500">
                     sem consents ainda. cola o snippet num site para começar.
                   </td>
                 </tr>
@@ -254,8 +257,8 @@ function actionBadge(action: string) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
-      <div className="mt-1 text-xl font-bold text-matrix-100">{value}</div>
+      <div className="text-[10px] uppercase tracking-wider text-ink-500">{label}</div>
+      <div className="mt-1 text-xl font-bold text-ink-100">{value}</div>
     </div>
   );
 }
@@ -265,12 +268,12 @@ function BreakdownRow({ label, count, total }: { label: string; count: number; t
   return (
     <div>
       <div className="flex items-baseline justify-between text-xs mb-1">
-        <span className="text-matrix-200/70 font-mono">{label}</span>
-        <span className="text-matrix-100 font-bold">
-          {fmtNumber(count)} <span className="text-matrix-700">· {pct}%</span>
+        <span className="text-ink-300/70 font-mono">{label}</span>
+        <span className="text-ink-100 font-bold">
+          {fmtNumber(count)} <span className="text-ink-500">· {pct}%</span>
         </span>
       </div>
-      <div className="h-1 bg-matrix-900/40 rounded overflow-hidden">
+      <div className="h-1 bg-ink-800/60 rounded overflow-hidden">
         <div className="h-full bg-matrix-500 transition-all" style={{ width: `${pct}%` }} />
       </div>
     </div>

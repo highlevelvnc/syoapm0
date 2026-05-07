@@ -24,9 +24,9 @@ export function SecurityScore({
   if (status === null) {
     return (
       <div className="terminal-card p-6">
-        <div className="text-[10px] uppercase tracking-wider text-matrix-700">security score</div>
-        <div className="text-3xl font-bold text-matrix-700 mt-1">—</div>
-        <div className="text-xs text-matrix-700 mt-1">corre o primeiro scan</div>
+        <div className="text-[10px] uppercase tracking-wider text-ink-500">security score</div>
+        <div className="text-3xl font-bold text-ink-500 mt-1">—</div>
+        <div className="text-xs text-ink-500 mt-1">corre o primeiro scan</div>
       </div>
     );
   }
@@ -36,7 +36,7 @@ export function SecurityScore({
       <div className="terminal-card p-6 scanline">
         <div className="text-[10px] uppercase tracking-wider text-matrix-500">scanning</div>
         <div className="text-3xl font-bold text-matrix-300 mt-1 animate-pulse">···</div>
-        <div className="text-xs text-matrix-700 mt-1">a recolher findings</div>
+        <div className="text-xs text-ink-500 mt-1">a recolher findings</div>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export function SecurityScore({
       <div className="terminal-card p-6">
         <div className="text-[10px] uppercase tracking-wider text-red-400">scan falhou</div>
         <div className="text-3xl font-bold text-red-400 mt-1">!!</div>
-        <div className="text-xs text-matrix-700 mt-1">tenta de novo</div>
+        <div className="text-xs text-ink-500 mt-1">tenta de novo</div>
       </div>
     );
   }
@@ -58,7 +58,7 @@ export function SecurityScore({
   return (
     <div className="terminal-card p-6 flex items-center justify-between gap-6">
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-matrix-700">security score</div>
+        <div className="text-[10px] uppercase tracking-wider text-ink-500">security score</div>
         <div
           className={`${numClass} font-bold tabular-nums leading-none mt-1 text-glow`}
           style={{ color: gradeColor(grade) }}

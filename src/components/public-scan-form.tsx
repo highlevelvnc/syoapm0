@@ -22,8 +22,8 @@ export function PublicScanForm({ size = "md" }: { size?: "md" | "lg" }) {
 
   const inputClass =
     size === "lg"
-      ? "w-full bg-ink-950 border border-matrix-900 rounded-l px-4 py-3 text-base text-matrix-50 placeholder:text-matrix-700 focus:outline-none focus:border-matrix-500 font-mono"
-      : "w-full bg-ink-950 border border-matrix-900 rounded-l px-3 py-2 text-sm text-matrix-50 placeholder:text-matrix-700 focus:outline-none focus:border-matrix-500 font-mono";
+      ? "w-full bg-ink-950 border border-ink-700 rounded-l px-4 py-3 text-base text-ink-50 placeholder:text-ink-500 focus:outline-none focus:border-matrix-500 font-mono"
+      : "w-full bg-ink-950 border border-ink-700 rounded-l px-3 py-2 text-sm text-ink-50 placeholder:text-ink-500 focus:outline-none focus:border-matrix-500 font-mono";
 
   const buttonClass =
     size === "lg"
@@ -48,7 +48,7 @@ export function PublicScanForm({ size = "md" }: { size?: "md" | "lg" }) {
         </button>
       </div>
       {error && <div className="text-xs text-red-400 mt-2">{error}</div>}
-      <div className="text-[10px] text-matrix-700 mt-2 uppercase tracking-wider">
+      <div className="text-[10px] text-ink-500 mt-2 uppercase tracking-wider">
         grátis · sem signup · sem rate limit por domain (24h cache)
       </div>
     </form>

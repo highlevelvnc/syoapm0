@@ -24,7 +24,7 @@ function Cell({ label, value }: { label: string; value: number }) {
       <div className="text-3xl sm:text-4xl font-bold text-matrix-500 text-glow tabular-nums">
         {fmtNumber(value)}
       </div>
-      <div className="text-[10px] uppercase tracking-wider text-matrix-700 mt-1">{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-ink-500 mt-1">{label}</div>
     </div>
   );
 }

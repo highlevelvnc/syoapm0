@@ -33,9 +33,9 @@ export default async function TestIndexPage() {
     <main className="min-h-screen relative">
       <div className="grid-bg fixed inset-0 -z-10 opacity-50" aria-hidden />
 
-      <nav className="border-b border-matrix-900 bg-ink-900/70 backdrop-blur sticky top-0 z-30">
+      <nav className="border-b border-ink-700 bg-ink-900/70 backdrop-blur sticky top-0 z-30">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-matrix-50 font-bold tracking-wider">
+          <Link href="/" className="flex items-center gap-2 text-ink-50 font-bold tracking-wider">
             <span className="text-matrix-500 text-glow">▊</span>
             <span>{APP_NAME}</span>
           </Link>
@@ -49,11 +49,11 @@ export default async function TestIndexPage() {
 
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-4">// public scan</div>
-        <h1 className="text-4xl sm:text-6xl font-bold text-matrix-50 mb-4 tracking-tight">
+        <h1 className="text-4xl sm:text-6xl font-bold text-ink-50 mb-4 tracking-tight">
           testa qualquer site.<br />
           <span className="text-matrix-500 text-glow">grátis</span>, sem signup.
         </h1>
-        <p className="text-base sm:text-lg text-matrix-200/70 max-w-2xl mx-auto mb-10">
+        <p className="text-base sm:text-lg text-ink-300/70 max-w-2xl mx-auto mb-10">
           SSL · Headers · DNS · Exposed paths · Anti-phishing/typosquatting. Em 5-15s recebes a grade
           de segurança e os top issues.
         </p>
@@ -88,10 +88,10 @@ export default async function TestIndexPage() {
                   >
                     {grade}
                   </div>
-                  <div className="text-xs text-matrix-200 mt-2 truncate group-hover:text-matrix-50">
+                  <div className="text-xs text-ink-300 mt-2 truncate group-hover:text-ink-50">
                     {s.domain}
                   </div>
-                  <div className="text-[10px] text-matrix-700 mt-0.5">{fmtDate(s.created_at)}</div>
+                  <div className="text-[10px] text-ink-500 mt-0.5">{fmtDate(s.created_at)}</div>
                 </Link>
               );
             })}
@@ -99,8 +99,8 @@ export default async function TestIndexPage() {
         </section>
       )}
 
-      <footer className="border-t border-matrix-900 py-10 mt-12">
-        <div className="max-w-6xl mx-auto px-6 text-center text-xs text-matrix-700">
+      <footer className="border-t border-ink-700 py-10 mt-12">
+        <div className="max-w-6xl mx-auto px-6 text-center text-xs text-ink-500">
           {APP_NAME} · 100% defensivo · scan público é uma amostra. Cria conta para report completo + monitor diário.
         </div>
       </footer>

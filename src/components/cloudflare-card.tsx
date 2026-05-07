@@ -112,8 +112,8 @@ export function CloudflareCard(props: CloudflareCardProps) {
     return (
       <div className="terminal-card p-5">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// cloudflare</div>
-        <div className="text-matrix-50 font-bold mb-1">não conectado</div>
-        <p className="text-xs text-matrix-200/60 mb-3">
+        <div className="text-ink-50 font-bold mb-1">não conectado</div>
+        <p className="text-xs text-ink-300/60 mb-3">
           Conecta a conta Cloudflare para auto-config SSL strict, HSTS, Bot Fight, DNSSEC.
         </p>
         <Link href="/dashboard/settings/cloudflare" className="btn-matrix">
@@ -128,15 +128,15 @@ export function CloudflareCard(props: CloudflareCardProps) {
     return (
       <div className="terminal-card p-5">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// cloudflare</div>
-        <div className="text-matrix-50 font-bold mb-1">linkar zona</div>
-        <p className="text-xs text-matrix-200/60 mb-3">
+        <div className="text-ink-50 font-bold mb-1">linkar zona</div>
+        <p className="text-xs text-ink-300/60 mb-3">
           Escolhe a zona Cloudflare correspondente.
           {matched && <span className="text-matrix-300"> (auto-detectada: {matched.name})</span>}
         </p>
         {zones === null ? (
-          <div className="text-xs text-matrix-700">a carregar zonas...</div>
+          <div className="text-xs text-ink-500">a carregar zonas...</div>
         ) : zones.length === 0 ? (
-          <div className="text-xs text-matrix-700">nenhuma zona disponível na conta CF.</div>
+          <div className="text-xs text-ink-500">nenhuma zona disponível na conta CF.</div>
         ) : (
           <div className="space-y-2">
             <select
@@ -179,9 +179,9 @@ export function CloudflareCard(props: CloudflareCardProps) {
           <span className="badge-warn">linked, not hardened</span>
         )}
       </div>
-      <div className="text-matrix-50 font-bold mb-1">{props.cloudflareZoneName}</div>
+      <div className="text-ink-50 font-bold mb-1">{props.cloudflareZoneName}</div>
       {wasHardened && (
-        <p className="text-xs text-matrix-200/60 mb-3">
+        <p className="text-xs text-ink-300/60 mb-3">
           última aplicação: {new Date(props.cloudflareHardenedAt!).toLocaleString("pt-PT")} ·{" "}
           {successCount}/{lastSteps?.length ?? 0} settings ok
         </p>
@@ -196,8 +196,8 @@ export function CloudflareCard(props: CloudflareCardProps) {
         </button>
       </div>
       {lastSteps && lastSteps.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-matrix-900 space-y-1">
-          <div className="text-[10px] uppercase tracking-wider text-matrix-700 mb-2">
+        <div className="mt-4 pt-4 border-t border-ink-700 space-y-1">
+          <div className="text-[10px] uppercase tracking-wider text-ink-500 mb-2">
             // settings aplicados
           </div>
           {lastSteps.map((s, i) => (
@@ -209,7 +209,7 @@ export function CloudflareCard(props: CloudflareCardProps) {
               >
                 {s.status === "success" ? "[ok]" : "[!!]"}
               </span>
-              <span className="text-matrix-200/80">{s.description}</span>
+              <span className="text-ink-300/80">{s.description}</span>
               {s.error && (
                 <span className="text-red-400/60 text-[10px]">— {s.error}</span>
               )}

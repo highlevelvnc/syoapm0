@@ -86,7 +86,7 @@ export function GithubForm({ connected, login }: { connected: boolean; login: st
             className="input-matrix"
             disabled={busy}
           />
-          <p className="text-[10px] text-matrix-700 mt-2">
+          <p className="text-[10px] text-ink-500 mt-2">
             encrypted at rest com AES-256-GCM. nunca volta ao frontend depois.
           </p>
         </div>
@@ -107,10 +107,10 @@ export function GithubForm({ connected, login }: { connected: boolean; login: st
       <div className="terminal-card p-5 flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-matrix-50 font-bold">github conectado</span>
+            <span className="text-ink-50 font-bold">github conectado</span>
             <span className="badge-ok">active</span>
           </div>
-          <div className="text-xs text-matrix-700">@{login}</div>
+          <div className="text-xs text-ink-500">@{login}</div>
         </div>
         <button onClick={handleDisconnect} disabled={busy} className="btn-ghost">
           $ desconectar
@@ -126,9 +126,9 @@ export function GithubForm({ connected, login }: { connected: boolean; login: st
             {error}
           </div>
         )}
-        {!repos && busy && <div className="text-sm text-matrix-700">a carregar repos...</div>}
+        {!repos && busy && <div className="text-sm text-ink-500">a carregar repos...</div>}
         {repos && repos.length === 0 && (
-          <div className="terminal-card p-5 text-sm text-matrix-200/60">
+          <div className="terminal-card p-5 text-sm text-ink-300/60">
             nenhum repo. confirma que o token tem scope <code>repo</code> + <code>security_events</code>.
           </div>
         )}
@@ -137,15 +137,15 @@ export function GithubForm({ connected, login }: { connected: boolean; login: st
             {repos.slice(0, 50).map((r) => (
               <li key={r.id} className="terminal-card p-3 flex items-center justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="text-matrix-50 font-bold text-sm truncate">{r.full_name}</div>
-                  <div className="text-[10px] text-matrix-700 mt-0.5">
+                  <div className="text-ink-50 font-bold text-sm truncate">{r.full_name}</div>
+                  <div className="text-[10px] text-ink-500 mt-0.5">
                     {r.private ? "private" : "public"} · pushed {new Date(r.pushed_at).toLocaleDateString("pt-PT")}
                   </div>
                 </div>
               </li>
             ))}
             {repos.length > 50 && (
-              <li className="text-[10px] text-matrix-700 text-center pt-2">
+              <li className="text-[10px] text-ink-500 text-center pt-2">
                 +{repos.length - 50} mais (mostrar todos quando linkar a um site)
               </li>
             )}

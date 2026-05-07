@@ -61,11 +61,11 @@ export default function NewSitePage() {
 
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
-      <Link href="/dashboard" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
+      <Link href="/dashboard" className="text-xs text-ink-500 hover:text-matrix-300 mb-4 inline-block">
         ← voltar
       </Link>
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// sites.new</div>
-      <h1 className="text-3xl font-bold text-matrix-50 mb-8">adicionar site</h1>
+      <h1 className="text-3xl font-bold text-ink-50 mb-8">adicionar site</h1>
 
       <form onSubmit={handleSubmit} className="terminal-card p-6 space-y-5">
         <Field label="nome interno">
@@ -108,7 +108,7 @@ export default function NewSitePage() {
               type="color"
               value={themeColor}
               onChange={(e) => setThemeColor(e.target.value)}
-              className="bg-ink-950 border border-matrix-900 rounded h-10 w-16 cursor-pointer"
+              className="bg-ink-950 border border-ink-700 rounded h-10 w-16 cursor-pointer"
               disabled={loading}
             />
             <input
@@ -142,7 +142,7 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
     <label className="block">
       <div className="flex items-baseline justify-between mb-2">
         <span className="text-xs uppercase tracking-wider text-matrix-500">$ {label}</span>
-        {hint && <span className="text-[10px] text-matrix-700">{hint}</span>}
+        {hint && <span className="text-[10px] text-ink-500">{hint}</span>}
       </div>
       {children}
     </label>

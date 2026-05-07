@@ -56,20 +56,20 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6 grid-bg">
       <div className="terminal-card p-8 w-full max-w-md">
-        <Link href="/" className="text-matrix-50 font-bold text-xl flex items-center gap-2 mb-2">
+        <Link href="/" className="text-ink-50 font-bold text-xl flex items-center gap-2 mb-2">
           <span className="text-matrix-500 text-glow">▊</span>
           <span>{APP_NAME}</span>
         </Link>
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-6">// auth.login</div>
 
-        <div className="flex gap-1 mb-6 bg-ink-950 border border-matrix-900 rounded p-1">
+        <div className="flex gap-1 mb-6 bg-ink-950 border border-ink-700 rounded p-1">
           <button
             type="button"
             onClick={() => switchMode("password")}
             className={`flex-1 text-[11px] uppercase tracking-wider py-2 rounded transition-colors ${
               mode === "password"
                 ? "bg-matrix-500 text-ink-950 font-bold"
-                : "text-matrix-700 hover:text-matrix-300"
+                : "text-ink-500 hover:text-matrix-300"
             }`}
           >
             password
@@ -80,7 +80,7 @@ export default function LoginPage() {
             className={`flex-1 text-[11px] uppercase tracking-wider py-2 rounded transition-colors ${
               mode === "magic"
                 ? "bg-matrix-500 text-ink-950 font-bold"
-                : "text-matrix-700 hover:text-matrix-300"
+                : "text-ink-500 hover:text-matrix-300"
             }`}
           >
             magic link
@@ -89,8 +89,8 @@ export default function LoginPage() {
 
         {magicSent ? (
           <div className="space-y-3">
-            <div className="text-matrix-50 font-bold">verifica o teu email.</div>
-            <p className="text-sm text-matrix-200/70">
+            <div className="text-ink-50 font-bold">verifica o teu email.</div>
+            <p className="text-sm text-ink-300/70">
               Enviámos um link para <span className="text-matrix-500 break-all">{email}</span>. Clica para entrar.
             </p>
             <button onClick={() => { setMagicSent(false); setEmail(""); }} className="btn-ghost mt-4">
@@ -121,7 +121,7 @@ export default function LoginPage() {
                   <label className="text-xs uppercase tracking-wider text-matrix-500">
                     $ password
                   </label>
-                  <Link href="/auth/reset" className="text-[10px] text-matrix-700 hover:text-matrix-300">
+                  <Link href="/auth/reset" className="text-[10px] text-ink-500 hover:text-matrix-300">
                     esqueceste?
                   </Link>
                 </div>
@@ -155,9 +155,9 @@ export default function LoginPage() {
                   : "$ enviar magic link →"}
             </button>
 
-            <div className="text-center text-[10px] text-matrix-700 pt-2">
+            <div className="text-center text-[10px] text-ink-500 pt-2">
               não tens conta?{" "}
-              <Link href="/auth/signup" className="text-matrix-300 hover:text-matrix-100 underline">
+              <Link href="/auth/signup" className="text-matrix-300 hover:text-ink-100 underline">
                 criar conta
               </Link>
             </div>

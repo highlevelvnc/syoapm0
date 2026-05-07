@@ -40,14 +40,14 @@ export default function ResetConfirmPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6 grid-bg">
       <div className="terminal-card p-8 w-full max-w-md">
-        <Link href="/" className="text-matrix-50 font-bold text-xl flex items-center gap-2 mb-2">
+        <Link href="/" className="text-ink-50 font-bold text-xl flex items-center gap-2 mb-2">
           <span className="text-matrix-500 text-glow">▊</span>
           <span>{APP_NAME}</span>
         </Link>
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-6">// auth.reset.confirm</div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <p className="text-sm text-matrix-200/70">Define a tua nova password.</p>
+          <p className="text-sm text-ink-300/70">Define a tua nova password.</p>
           <div>
             <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">
               $ nova password
@@ -62,7 +62,7 @@ export default function ResetConfirmPage() {
               className="input-matrix"
               disabled={busy}
             />
-            <p className="text-[10px] text-matrix-700 mt-1">mínimo 6 caracteres.</p>
+            <p className="text-[10px] text-ink-500 mt-1">mínimo 6 caracteres.</p>
           </div>
           <div>
             <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">

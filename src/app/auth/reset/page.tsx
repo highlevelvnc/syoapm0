@@ -31,7 +31,7 @@ export default function ResetPage() {
   return (
     <main className="min-h-screen flex items-center justify-center px-6 grid-bg">
       <div className="terminal-card p-8 w-full max-w-md">
-        <Link href="/" className="text-matrix-50 font-bold text-xl flex items-center gap-2 mb-2">
+        <Link href="/" className="text-ink-50 font-bold text-xl flex items-center gap-2 mb-2">
           <span className="text-matrix-500 text-glow">▊</span>
           <span>{APP_NAME}</span>
         </Link>
@@ -39,8 +39,8 @@ export default function ResetPage() {
 
         {sent ? (
           <div className="space-y-3">
-            <div className="text-matrix-50 font-bold">verifica o teu email.</div>
-            <p className="text-sm text-matrix-200/70">
+            <div className="text-ink-50 font-bold">verifica o teu email.</div>
+            <p className="text-sm text-ink-300/70">
               Enviámos link para <span className="text-matrix-500 break-all">{email}</span>. Clica para definir nova password.
             </p>
             <Link href="/auth/login" className="btn-ghost mt-4 inline-block">
@@ -49,7 +49,7 @@ export default function ResetPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <p className="text-sm text-matrix-200/70">
+            <p className="text-sm text-ink-300/70">
               Mete o teu email. Enviamos um link para definires nova password.
             </p>
             <div>
@@ -80,7 +80,7 @@ export default function ResetPage() {
             </button>
             <Link
               href="/auth/login"
-              className="block text-center text-[10px] text-matrix-700 hover:text-matrix-300 pt-2"
+              className="block text-center text-[10px] text-ink-500 hover:text-matrix-300 pt-2"
             >
               ← voltar ao login
             </Link>

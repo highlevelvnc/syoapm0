@@ -68,7 +68,7 @@ const FAQS: QA[] = [
     a: (
       <>
         Open-source roadmap está em discussão. Para já, plano Enterprise inclui deploy próprio. Contacta{" "}
-        <a href="mailto:vnc.oli@gmail.com" className="text-matrix-300 hover:text-matrix-100 underline">
+        <a href="mailto:vnc.oli@gmail.com" className="text-matrix-300 hover:text-ink-100 underline">
           vnc.oli@gmail.com
         </a>
         .
@@ -82,11 +82,11 @@ export function Faq() {
     <ul className="space-y-3 max-w-3xl">
       {FAQS.map((qa, i) => (
         <li key={i} className="terminal-card p-5">
-          <div className="text-matrix-50 font-bold mb-2 flex items-baseline gap-2">
+          <div className="text-ink-50 font-bold mb-2 flex items-baseline gap-2">
             <span className="text-matrix-500 text-xs">[{String(i + 1).padStart(2, "0")}]</span>
             <span>{qa.q}</span>
           </div>
-          <div className="text-sm text-matrix-200/70 leading-relaxed pl-7">{qa.a}</div>
+          <div className="text-sm text-ink-300/70 leading-relaxed pl-7">{qa.a}</div>
         </li>
       ))}
     </ul>

@@ -34,11 +34,11 @@ export function ScanProgress({ domain }: { domain: string }) {
           >
             {line}
             {i === step && step < STEPS.length && <span className="animate-blink">▊</span>}
-            {i < step && <span className="text-matrix-700"> [OK]</span>}
+            {i < step && <span className="text-ink-500"> [OK]</span>}
           </div>
         ))}
       </div>
-      <div className="text-[10px] text-matrix-700 mt-6 uppercase tracking-wider">
+      <div className="text-[10px] text-ink-500 mt-6 uppercase tracking-wider">
         primeira execução demora 5-15s. depois fica cached 24h.
       </div>
     </div>

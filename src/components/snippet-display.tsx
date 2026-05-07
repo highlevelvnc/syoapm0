@@ -25,14 +25,14 @@ export function SnippetDisplay({
 
   return (
     <div className="terminal-card p-5">
-      <pre className="text-xs sm:text-sm text-matrix-200 overflow-x-auto bg-ink-950 border border-matrix-900 rounded p-3 mb-3 whitespace-pre-wrap break-all">
+      <pre className="text-xs sm:text-sm text-ink-300 overflow-x-auto bg-ink-950 border border-ink-700 rounded p-3 mb-3 whitespace-pre-wrap break-all">
 {snippet}
       </pre>
       <div className="flex flex-wrap gap-2 items-center">
         <button onClick={copy} className="btn-matrix-solid">
           {copied ? "[ok] copiado" : "$ copiar"}
         </button>
-        <span className="text-[10px] text-matrix-700">
+        <span className="text-[10px] text-ink-500">
           cola no &lt;head&gt; ou antes de &lt;/body&gt;
         </span>
       </div>

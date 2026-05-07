@@ -101,8 +101,8 @@ export function GithubCard(props: GithubCardProps) {
     return (
       <div className="terminal-card p-5">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// github</div>
-        <div className="text-matrix-50 font-bold mb-1">não conectado</div>
-        <p className="text-xs text-matrix-200/60 mb-3">
+        <div className="text-ink-50 font-bold mb-1">não conectado</div>
+        <p className="text-xs text-ink-300/60 mb-3">
           Conecta GitHub para ler Dependabot alerts dos repos dos teus sites.
         </p>
         <Link href="/dashboard/settings/github" className="btn-matrix">
@@ -116,12 +116,12 @@ export function GithubCard(props: GithubCardProps) {
     return (
       <div className="terminal-card p-5">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// github</div>
-        <div className="text-matrix-50 font-bold mb-1">linkar repo</div>
-        <p className="text-xs text-matrix-200/60 mb-3">Escolhe o repo correspondente a este site.</p>
+        <div className="text-ink-50 font-bold mb-1">linkar repo</div>
+        <p className="text-xs text-ink-300/60 mb-3">Escolhe o repo correspondente a este site.</p>
         {repos === null ? (
-          <div className="text-xs text-matrix-700">a carregar repos...</div>
+          <div className="text-xs text-ink-500">a carregar repos...</div>
         ) : repos.length === 0 ? (
-          <div className="text-xs text-matrix-700">nenhum repo acessível</div>
+          <div className="text-xs text-ink-500">nenhum repo acessível</div>
         ) : (
           <div className="space-y-2">
             <select
@@ -165,11 +165,11 @@ export function GithubCard(props: GithubCardProps) {
           <span className="badge-muted">no scan yet</span>
         )}
       </div>
-      <div className="text-matrix-50 font-bold mb-1 break-all">
+      <div className="text-ink-50 font-bold mb-1 break-all">
         {props.githubOwner}/{props.githubRepo}
       </div>
       {lastScan && (
-        <p className="text-xs text-matrix-200/60 mb-3">
+        <p className="text-xs text-ink-300/60 mb-3">
           último scan: {new Date(lastScan).toLocaleString("pt-PT")} · {openAlerts} open alerts
         </p>
       )}
