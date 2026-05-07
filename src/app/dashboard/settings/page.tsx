@@ -15,6 +15,14 @@ export default async function SettingsPage() {
     .eq("owner_id", user?.id ?? "")
     .maybeSingle();
 
+  const { data: emailChannel } = await supabase
+    .from("notification_channels")
+    .select("id")
+    .eq("owner_id", user?.id ?? "")
+    .eq("kind", "email")
+    .eq("enabled", true)
+    .maybeSingle();
+
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
       <Link href="/dashboard" className="text-xs text-matrix-700 hover:text-matrix-300 mb-4 inline-block">
@@ -46,23 +54,35 @@ export default async function SettingsPage() {
           </div>
         </Link>
 
+        <Link
+          href="/dashboard/settings/email"
+          className="terminal-card p-5 block hover:border-matrix-500/40 transition-colors group"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-matrix-50 font-bold">Email alerts</span>
+                {emailChannel ? (
+                  <span className="badge-ok">connected</span>
+                ) : (
+                  <span className="badge-muted">not connected</span>
+                )}
+              </div>
+              <div className="text-xs text-matrix-200/60">
+                Email quando scan encontra critical/high, SSL prestes a expirar, phishing variant novo, achievement unlocked.
+              </div>
+            </div>
+            <div className="text-matrix-500 text-sm group-hover:translate-x-1 transition-transform">→</div>
+          </div>
+        </Link>
+
         <div className="terminal-card p-5 opacity-50">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-matrix-50 font-bold">Telegram alerts</span>
             <span className="badge-muted">soon</span>
           </div>
           <div className="text-xs text-matrix-200/60">
-            DMs quando score cai, SSL expira, novo phishing detectado, achievement unlocked.
-          </div>
-        </div>
-
-        <div className="terminal-card p-5 opacity-50">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-matrix-50 font-bold">Email alerts</span>
-            <span className="badge-muted">soon</span>
-          </div>
-          <div className="text-xs text-matrix-200/60">
-            Resumo semanal por email via Resend.
+            DMs quando algo importante acontece. Mais imediato que email para users que vivem em mobile.
           </div>
         </div>
 
