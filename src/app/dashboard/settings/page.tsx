@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { DbHealth } from "@/components/db-health";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,10 @@ export default async function SettingsPage() {
       </Link>
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// settings</div>
       <h1 className="text-3xl font-bold text-ink-50 mb-8">configurações</h1>
+
+      <div className="mb-8">
+        <DbHealth />
+      </div>
 
       <div className="space-y-3">
         <Link
