@@ -62,12 +62,19 @@ export async function runAndPersistScan({ siteId, domain }: RunOptions) {
       .eq("site_id", siteId)
       .gte("created_at", since);
 
+    const { data: siteRow } = await sb
+      .from("sites")
+      .select("cloudflare_hardened_at")
+      .eq("id", siteId)
+      .maybeSingle();
+
     const detectedTech = ((report.headers.metadata as { detected_tech?: string[] } | undefined)?.detected_tech) ?? [];
 
     const achievements = deriveAchievements({
       report,
       hasConsents: (consentCount ?? 0) > 0,
       detectedTech,
+      cloudflareHardened: !!siteRow?.cloudflare_hardened_at,
     });
 
     if (achievements.length > 0) {

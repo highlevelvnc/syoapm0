@@ -23,11 +23,12 @@ interface AchievementContext {
   report: ScanReport;
   hasConsents: boolean;
   detectedTech: string[];
+  cloudflareHardened?: boolean;
 }
 
 export function deriveAchievements(ctx: AchievementContext): AchievementDef[] {
   const earned: AchievementDef[] = [];
-  const { report, hasConsents, detectedTech } = ctx;
+  const { report, hasConsents, detectedTech, cloudflareHardened } = ctx;
 
   const allFindings = [
     ...report.ssl.findings,
@@ -59,7 +60,7 @@ export function deriveAchievements(ctx: AchievementContext): AchievementDef[] {
   if (totalNonInfoIssues === 0) earned.push(ACHIEVEMENTS.zero_findings);
 
   if (hasConsents) earned.push(ACHIEVEMENTS.rgpd_compliant);
-  if (detectedTech.includes("cloudflare")) earned.push(ACHIEVEMENTS.cf_hardened);
+  if (detectedTech.includes("cloudflare") || cloudflareHardened) earned.push(ACHIEVEMENTS.cf_hardened);
 
   return earned;
 }

@@ -9,6 +9,7 @@ import { CategoryScores } from "@/components/category-scores";
 import { AchievementsGrid, type DBAchievement } from "@/components/achievements-grid";
 import { FindingsList, type DBFinding } from "@/components/findings-list";
 import { ScanNowButton } from "@/components/scan-now-button";
+import { CloudflareCard } from "@/components/cloudflare-card";
 import { ACHIEVEMENTS } from "@/lib/scanners/achievements";
 import type { Grade } from "@/lib/scanners";
 
@@ -20,10 +21,17 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
 
   const { data: site } = await supabase
     .from("sites")
-    .select("id, domain, name, theme_color, lang_default, badge_enabled, created_at")
+    .select(
+      "id, domain, name, theme_color, lang_default, badge_enabled, created_at, cloudflare_zone_id, cloudflare_zone_name, cloudflare_hardened_at, cloudflare_settings_applied"
+    )
     .eq("id", id)
     .maybeSingle();
   if (!site) notFound();
+
+  const { data: cfConn } = await supabase
+    .from("cloudflare_connections")
+    .select("created_at")
+    .maybeSingle();
 
   const { data: lastScan } = await supabase
     .from("scans")
@@ -109,10 +117,19 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       {/* SECURITY */}
       <section className="mb-10">
         <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// security</div>
-        <div className="grid lg:grid-cols-2 gap-6 mb-3">
+        <div className="grid lg:grid-cols-2 gap-6 mb-6">
           <SecurityScore score={score} grade={grade} status={status} />
           <CategoryScores scores={categoryScores} />
         </div>
+        <CloudflareCard
+          siteId={site.id}
+          domain={site.domain}
+          cloudflareConnected={!!cfConn}
+          cloudflareZoneId={site.cloudflare_zone_id}
+          cloudflareZoneName={site.cloudflare_zone_name}
+          cloudflareHardenedAt={site.cloudflare_hardened_at}
+          cloudflareSettingsApplied={site.cloudflare_settings_applied as never}
+        />
         {lastScan?.completed_at && (
           <div className="text-[10px] text-matrix-700">
             último scan: {fmtDate(lastScan.completed_at)} · {findings.length} findings · {criticalHigh} críticos/altos

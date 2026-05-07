@@ -26,7 +26,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <div className="text-xs text-matrix-700 hidden sm:block">/ dashboard</div>
           </div>
           <div className="flex items-center gap-3 text-xs">
-            <span className="hidden sm:inline text-matrix-700 truncate max-w-[200px]">{user.email}</span>
+            <Link href="/dashboard/settings" className="btn-ghost hidden sm:inline-flex">
+              $ settings
+            </Link>
+            <span className="hidden md:inline text-matrix-700 truncate max-w-[200px]">{user.email}</span>
             <SignOutButton />
           </div>
         </div>
