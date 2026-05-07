@@ -55,7 +55,17 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// site.detail</div>
       <div className="flex items-center justify-between gap-4 mb-1 flex-wrap">
         <h1 className="text-3xl font-bold text-matrix-50">{site.name}</h1>
-        <span className="badge-ok">live</span>
+        <div className="flex items-center gap-3">
+          <a
+            href={`/preview/${site.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-matrix"
+          >
+            preview banner ↗
+          </a>
+          <span className="badge-ok">live</span>
+        </div>
       </div>
       <div className="text-sm text-matrix-700 mb-8">{site.domain}</div>
 
