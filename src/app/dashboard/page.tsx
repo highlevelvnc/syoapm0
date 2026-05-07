@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { fmtNumber } from "@/lib/utils";
+import { gradeColor } from "@/lib/scanners/score";
+import type { Grade } from "@/lib/scanners";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
+
   const { data: sites } = await supabase
     .from("sites")
     .select("id, domain, name, theme_color, created_at")
@@ -16,6 +19,46 @@ export default async function DashboardPage() {
     .from("consents")
     .select("id", { count: "exact", head: true })
     .gte("created_at", since);
+
+  const siteIds = (sites ?? []).map((s) => s.id);
+  let latestScansMap: Record<string, { id: string; score: number | null; grade: Grade | null; status: string }> = {};
+  let openCriticalHigh = 0;
+
+  if (siteIds.length > 0) {
+    const { data: latest } = await supabase
+      .from("latest_scans")
+      .select("id, site_id, score, grade, status")
+      .in("site_id", siteIds);
+
+    latestScansMap = (latest ?? []).reduce<typeof latestScansMap>((acc, s) => {
+      acc[s.site_id] = {
+        id: s.id,
+        score: s.score,
+        grade: (s.grade ?? null) as Grade | null,
+        status: s.status,
+      };
+      return acc;
+    }, {});
+
+    const completedScanIds = (latest ?? [])
+      .filter((s) => s.status === "completed")
+      .map((s) => s.id);
+
+    if (completedScanIds.length > 0) {
+      const { count } = await supabase
+        .from("scan_findings")
+        .select("id", { count: "exact", head: true })
+        .in("scan_id", completedScanIds)
+        .in("severity", ["critical", "high"]);
+      openCriticalHigh = count ?? 0;
+    }
+  }
+
+  const scoredSites = Object.values(latestScansMap).filter((s) => s.score !== null);
+  const avgScore =
+    scoredSites.length > 0
+      ? Math.round(scoredSites.reduce((sum, s) => sum + (s.score ?? 0), 0) / scoredSites.length)
+      : null;
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-10">
@@ -31,44 +74,101 @@ export default async function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid sm:grid-cols-3 gap-4 mb-8">
-        <Stat label="sites totais" value={fmtNumber(sites?.length ?? 0)} />
+      <div className="grid sm:grid-cols-4 gap-4 mb-8">
+        <Stat label="sites" value={fmtNumber(sites?.length ?? 0)} />
+        <Stat
+          label="avg score"
+          value={avgScore !== null ? `${avgScore}` : "—"}
+          hint={avgScore !== null ? `${scoredSites.length} com scan` : "sem scans ainda"}
+        />
+        <Stat
+          label="critical/high"
+          value={fmtNumber(openCriticalHigh)}
+          hint={openCriticalHigh > 0 ? "requer acção" : "tudo limpo"}
+          tone={openCriticalHigh > 0 ? "danger" : "ok"}
+        />
         <Stat label="consents (30d)" value={fmtNumber(totalConsents ?? 0)} />
-        <Stat label="security score" value="—" hint="sprint 3" />
       </div>
 
       {!sites || sites.length === 0 ? (
         <EmptyState />
       ) : (
         <ul className="space-y-3">
-          {sites.map((s) => (
-            <li key={s.id}>
-              <Link
-                href={`/dashboard/sites/${s.id}`}
-                className="terminal-card p-5 flex items-center justify-between hover:border-matrix-500/40 transition-colors group"
-              >
-                <div className="flex items-center gap-4 min-w-0">
-                  <span className="text-matrix-500" style={{ color: s.theme_color }}>▊</span>
-                  <div className="min-w-0">
-                    <div className="text-matrix-50 font-bold truncate">{s.name}</div>
-                    <div className="text-xs text-matrix-700 mt-1 truncate">{s.domain}</div>
+          {sites.map((s) => {
+            const scan = latestScansMap[s.id];
+            return (
+              <li key={s.id}>
+                <Link
+                  href={`/dashboard/sites/${s.id}`}
+                  className="terminal-card p-5 flex items-center justify-between hover:border-matrix-500/40 transition-colors group gap-4"
+                >
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
+                    <span style={{ color: s.theme_color }}>▊</span>
+                    <div className="min-w-0">
+                      <div className="text-matrix-50 font-bold truncate">{s.name}</div>
+                      <div className="text-xs text-matrix-700 mt-1 truncate">{s.domain}</div>
+                    </div>
                   </div>
-                </div>
-                <div className="text-matrix-500 text-sm group-hover:translate-x-1 transition-transform">→</div>
-              </Link>
-            </li>
-          ))}
+                  <div className="flex items-center gap-4 shrink-0">
+                    <ScoreCell scan={scan} />
+                    <div className="text-matrix-500 text-sm group-hover:translate-x-1 transition-transform">
+                      →
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </main>
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function ScoreCell({
+  scan,
+}: {
+  scan: { id: string; score: number | null; grade: Grade | null; status: string } | undefined;
+}) {
+  if (!scan) {
+    return <span className="text-[10px] text-matrix-700 uppercase tracking-wider">no scan</span>;
+  }
+  if (scan.status === "running" || scan.status === "pending") {
+    return <span className="text-[10px] text-matrix-300 uppercase tracking-wider animate-pulse">scanning</span>;
+  }
+  if (scan.status === "failed") {
+    return <span className="text-[10px] text-red-400 uppercase tracking-wider">failed</span>;
+  }
+  if (scan.score === null || scan.grade === null) return null;
+  return (
+    <div className="text-right">
+      <div className="text-2xl font-bold tabular-nums leading-none" style={{ color: gradeColor(scan.grade) }}>
+        {scan.score}
+      </div>
+      <div className="text-[10px] uppercase tracking-wider mt-0.5" style={{ color: gradeColor(scan.grade) }}>
+        {scan.grade}
+      </div>
+    </div>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  hint,
+  tone = "default",
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  tone?: "default" | "ok" | "danger";
+}) {
+  const valueClass =
+    tone === "danger" ? "text-red-400" : tone === "ok" ? "text-matrix-300" : "text-matrix-100";
   return (
     <div className="terminal-card p-4">
       <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-matrix-100">{value}</div>
+      <div className={`mt-1 text-2xl font-bold ${valueClass}`}>{value}</div>
       {hint && <div className="text-xs text-matrix-700 mt-0.5">{hint}</div>}
     </div>
   );

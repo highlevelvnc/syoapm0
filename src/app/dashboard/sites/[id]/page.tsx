@@ -4,6 +4,13 @@ import { createClient } from "@/lib/supabase/server";
 import { APP_URL } from "@/lib/constants";
 import { fmtNumber, fmtDate } from "@/lib/utils";
 import { SnippetDisplay } from "@/components/snippet-display";
+import { SecurityScore } from "@/components/security-score";
+import { CategoryScores } from "@/components/category-scores";
+import { AchievementsGrid, type DBAchievement } from "@/components/achievements-grid";
+import { FindingsList, type DBFinding } from "@/components/findings-list";
+import { ScanNowButton } from "@/components/scan-now-button";
+import { ACHIEVEMENTS } from "@/lib/scanners/achievements";
+import type { Grade } from "@/lib/scanners";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +23,31 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
     .select("id, domain, name, theme_color, lang_default, badge_enabled, created_at")
     .eq("id", id)
     .maybeSingle();
-
   if (!site) notFound();
+
+  const { data: lastScan } = await supabase
+    .from("scans")
+    .select("id, status, score, grade, category_scores, started_at, completed_at, error")
+    .eq("site_id", site.id)
+    .order("started_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  let findings: DBFinding[] = [];
+  if (lastScan?.id && lastScan.status === "completed") {
+    const { data } = await supabase
+      .from("scan_findings")
+      .select("id, category, severity, code, title, description, recommendation, evidence")
+      .eq("scan_id", lastScan.id);
+    findings = (data ?? []) as DBFinding[];
+  }
+
+  const { data: achievementsRaw } = await supabase
+    .from("achievements")
+    .select("id, code, title, description, icon, earned_at")
+    .eq("site_id", site.id)
+    .order("earned_at", { ascending: false });
+  const achievements = (achievementsRaw ?? []) as DBAchievement[];
 
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const { count: total30d } = await supabase
@@ -43,9 +73,15 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
     acc[r.action] = (acc[r.action] || 0) + 1;
     return acc;
   }, {});
-
   const total = total30d ?? 0;
   const acceptRate = total > 0 ? Math.round(((actionCounts.accept_all ?? 0) / total) * 100) : 0;
+
+  const score = lastScan?.score ?? null;
+  const grade = (lastScan?.grade ?? null) as Grade | null;
+  const status = (lastScan?.status ?? null) as "completed" | "running" | "failed" | "pending" | null;
+  const categoryScores = (lastScan?.category_scores as Record<string, number> | null) ?? null;
+  const criticalHigh = findings.filter((f) => f.severity === "critical" || f.severity === "high").length;
+  const totalAchievements = Object.keys(ACHIEVEMENTS).length;
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-10">
@@ -55,7 +91,8 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       <div className="text-xs uppercase tracking-wider text-matrix-500 mb-2">// site.detail</div>
       <div className="flex items-center justify-between gap-4 mb-1 flex-wrap">
         <h1 className="text-3xl font-bold text-matrix-50">{site.name}</h1>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <ScanNowButton siteId={site.id} />
           <a
             href={`/preview/${site.id}`}
             target="_blank"
@@ -69,35 +106,71 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
       </div>
       <div className="text-sm text-matrix-700 mb-8">{site.domain}</div>
 
-      <div className="grid sm:grid-cols-3 gap-4 mb-8">
-        <Stat label="consents (30d)" value={fmtNumber(total)} />
-        <Stat label="accept rate" value={`${acceptRate}%`} />
-        <Stat label="criado" value={fmtDate(site.created_at).split(",")[0]} />
-      </div>
+      {/* SECURITY */}
+      <section className="mb-10">
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// security</div>
+        <div className="grid lg:grid-cols-2 gap-6 mb-3">
+          <SecurityScore score={score} grade={grade} status={status} />
+          <CategoryScores scores={categoryScores} />
+        </div>
+        {lastScan?.completed_at && (
+          <div className="text-[10px] text-matrix-700">
+            último scan: {fmtDate(lastScan.completed_at)} · {findings.length} findings · {criticalHigh} críticos/altos
+          </div>
+        )}
+        {lastScan?.status === "failed" && (
+          <div className="text-xs text-red-400 mt-2 border border-red-500/30 bg-red-950/20 px-3 py-2 rounded">
+            scan falhou: {lastScan.error || "erro desconhecido"}
+          </div>
+        )}
+      </section>
 
-      <div className="grid lg:grid-cols-2 gap-6 mb-8">
+      {/* ACHIEVEMENTS */}
+      <section className="mb-10">
+        <div className="flex items-baseline justify-between mb-3">
+          <div className="text-xs uppercase tracking-wider text-matrix-500">// achievements</div>
+          <div className="text-[10px] text-matrix-700">
+            {achievements.length} / {totalAchievements} unlocked
+          </div>
+        </div>
+        <AchievementsGrid earned={achievements} />
+      </section>
+
+      {/* FINDINGS */}
+      {lastScan?.status === "completed" && (
+        <section className="mb-10">
+          <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// findings</div>
+          <FindingsList findings={findings} />
+        </section>
+      )}
+
+      {/* COMPLIANCE · SNIPPET + CONSENTS */}
+      <section className="grid lg:grid-cols-2 gap-6 mb-10">
         <div>
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-            // 01 · snippet — cola em qualquer site
+            // compliance · snippet
           </div>
           <SnippetDisplay siteId={site.id} apiBase={APP_URL} />
         </div>
         <div>
           <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-            // 02 · breakdown (30d)
+            // consents (30d)
           </div>
           <div className="terminal-card p-5 space-y-3">
+            <div className="grid grid-cols-2 gap-3 mb-2">
+              <Stat label="total" value={fmtNumber(total)} />
+              <Stat label="accept rate" value={`${acceptRate}%`} />
+            </div>
             <BreakdownRow label="accept_all" count={actionCounts.accept_all ?? 0} total={total} />
             <BreakdownRow label="reject_all" count={actionCounts.reject_all ?? 0} total={total} />
             <BreakdownRow label="custom" count={actionCounts.custom ?? 0} total={total} />
           </div>
         </div>
-      </div>
+      </section>
 
-      <div>
-        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">
-          // 03 · log recente
-        </div>
+      {/* CONSENT LOG */}
+      <section>
+        <div className="text-xs uppercase tracking-wider text-matrix-500 mb-3">// consent log recente</div>
         <div className="terminal-card overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="text-[10px] uppercase tracking-wider text-matrix-700 border-b border-matrix-900">
@@ -139,7 +212,7 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
             </tbody>
           </table>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
@@ -152,9 +225,9 @@ function actionBadge(action: string) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="terminal-card p-4">
+    <div>
       <div className="text-[10px] uppercase tracking-wider text-matrix-700">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-matrix-100">{value}</div>
+      <div className="mt-1 text-xl font-bold text-matrix-100">{value}</div>
     </div>
   );
 }
