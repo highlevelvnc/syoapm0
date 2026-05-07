@@ -10,6 +10,7 @@ import { AchievementsGrid, type DBAchievement } from "@/components/achievements-
 import { FindingsList, type DBFinding } from "@/components/findings-list";
 import { ScanNowButton } from "@/components/scan-now-button";
 import { CloudflareCard } from "@/components/cloudflare-card";
+import { GithubCard } from "@/components/github-card";
 import { ACHIEVEMENTS } from "@/lib/scanners/achievements";
 import type { Grade } from "@/lib/scanners";
 
@@ -22,16 +23,16 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
   const { data: site } = await supabase
     .from("sites")
     .select(
-      "id, domain, name, theme_color, lang_default, badge_enabled, created_at, cloudflare_zone_id, cloudflare_zone_name, cloudflare_hardened_at, cloudflare_settings_applied"
+      "id, domain, name, theme_color, lang_default, badge_enabled, created_at, cloudflare_zone_id, cloudflare_zone_name, cloudflare_hardened_at, cloudflare_settings_applied, github_owner, github_repo, github_last_scan_at, github_open_alerts"
     )
     .eq("id", id)
     .maybeSingle();
   if (!site) notFound();
 
-  const { data: cfConn } = await supabase
-    .from("cloudflare_connections")
-    .select("created_at")
-    .maybeSingle();
+  const [{ data: cfConn }, { data: ghConn }] = await Promise.all([
+    supabase.from("cloudflare_connections").select("created_at").maybeSingle(),
+    supabase.from("github_connections").select("created_at").maybeSingle(),
+  ]);
 
   const { data: lastScan } = await supabase
     .from("scans")
@@ -121,15 +122,25 @@ export default async function SitePage({ params }: { params: Promise<{ id: strin
           <SecurityScore score={score} grade={grade} status={status} />
           <CategoryScores scores={categoryScores} />
         </div>
-        <CloudflareCard
-          siteId={site.id}
-          domain={site.domain}
-          cloudflareConnected={!!cfConn}
-          cloudflareZoneId={site.cloudflare_zone_id}
-          cloudflareZoneName={site.cloudflare_zone_name}
-          cloudflareHardenedAt={site.cloudflare_hardened_at}
-          cloudflareSettingsApplied={site.cloudflare_settings_applied as never}
-        />
+        <div className="grid lg:grid-cols-2 gap-6">
+          <CloudflareCard
+            siteId={site.id}
+            domain={site.domain}
+            cloudflareConnected={!!cfConn}
+            cloudflareZoneId={site.cloudflare_zone_id}
+            cloudflareZoneName={site.cloudflare_zone_name}
+            cloudflareHardenedAt={site.cloudflare_hardened_at}
+            cloudflareSettingsApplied={site.cloudflare_settings_applied as never}
+          />
+          <GithubCard
+            siteId={site.id}
+            githubConnected={!!ghConn}
+            githubOwner={site.github_owner}
+            githubRepo={site.github_repo}
+            githubLastScanAt={site.github_last_scan_at}
+            githubOpenAlerts={site.github_open_alerts ?? 0}
+          />
+        </div>
         {lastScan?.completed_at && (
           <div className="text-[10px] text-matrix-700">
             último scan: {fmtDate(lastScan.completed_at)} · {findings.length} findings · {criticalHigh} críticos/altos

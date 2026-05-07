@@ -2,13 +2,14 @@ import { gradeColor, gradeFromScore } from "@/lib/scanners/score";
 import type { Category } from "@/lib/scanners";
 
 const CATEGORY_INFO: Record<Category, { label: string; description: string }> = {
-  ssl:      { label: "SSL/TLS",  description: "certificado, protocolo, expiry" },
-  headers:  { label: "Headers",  description: "HSTS, CSP, X-Frame, etc." },
-  dns:      { label: "DNS",      description: "SPF, DMARC, CAA, DNSSEC" },
-  exposure: { label: "Exposure", description: ".env, .git, admin paths" },
-  phishing: { label: "Phishing", description: "typosquatting, dominios similares" },
-  tech:     { label: "Tech",     description: "stack detectada" },
-  general:  { label: "General",  description: "geral" },
+  ssl:          { label: "SSL/TLS",      description: "certificado, protocolo, expiry" },
+  headers:      { label: "Headers",      description: "HSTS, CSP, X-Frame, etc." },
+  dns:          { label: "DNS",          description: "SPF, DMARC, CAA, DNSSEC" },
+  exposure:     { label: "Exposure",     description: ".env, .git, admin paths" },
+  phishing:     { label: "Phishing",     description: "typosquatting, dominios similares" },
+  dependencies: { label: "Dependencies", description: "CVEs em pacotes (Dependabot)" },
+  tech:         { label: "Tech",         description: "stack detectada" },
+  general:      { label: "General",      description: "geral" },
 };
 
 export function CategoryScores({ scores }: { scores: Record<string, number> | null }) {

@@ -14,6 +14,7 @@ const CATEGORY_LABEL: Record<Category, string> = {
   dns: "DNS",
   exposure: "Exposure",
   phishing: "Phishing",
+  dependencies: "Deps",
   tech: "Tech",
   general: "General",
 };

@@ -1,5 +1,5 @@
 export type Severity = "critical" | "high" | "medium" | "low" | "info";
-export type Category = "ssl" | "headers" | "dns" | "exposure" | "tech" | "general" | "phishing";
+export type Category = "ssl" | "headers" | "dns" | "exposure" | "tech" | "general" | "phishing" | "dependencies";
 export type Grade = "A+" | "A" | "B" | "C" | "D" | "F";
 
 export interface Finding {
