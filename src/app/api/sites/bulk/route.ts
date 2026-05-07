@@ -12,10 +12,30 @@ export async function POST(req: NextRequest) {
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
 
-  const body = (await req.json().catch(() => ({}))) as { domains?: string[]; lang_default?: string };
+  const body = (await req.json().catch(() => ({}))) as {
+    domains?: string[];
+    lang_default?: string;
+    tags?: string[];
+  };
   const langDefault = body.lang_default && ["pt-PT", "pt-BR", "en"].includes(body.lang_default)
     ? body.lang_default
     : "pt-PT";
+
+  const normalizeTag = (t: string): string =>
+    t
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 32);
+
+  const tagsArr = Array.isArray(body.tags)
+    ? Array.from(
+        new Set(
+          body.tags.map((t) => (typeof t === "string" ? normalizeTag(t) : "")).filter(Boolean)
+        )
+      ).slice(0, 12)
+    : [];
 
   const inputDomains = Array.isArray(body.domains) ? body.domains : [];
   const cleaned = Array.from(
@@ -39,6 +59,7 @@ export async function POST(req: NextRequest) {
     name: domain,
     theme_color: "#10b981",
     lang_default: langDefault,
+    tags: tagsArr,
   }));
 
   const { data, error } = await supabase

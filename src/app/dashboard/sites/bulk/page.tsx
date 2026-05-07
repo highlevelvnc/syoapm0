@@ -4,9 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+function normalizeTag(t: string): string {
+  return t
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 32);
+}
+
 export default function BulkAddPage() {
   const router = useRouter();
   const [text, setText] = useState("");
+  const [tagsText, setTagsText] = useState("");
   const [langDefault, setLangDefault] = useState<"pt-PT" | "pt-BR" | "en">("pt-PT");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +27,15 @@ export default function BulkAddPage() {
     .map((d) => d.trim())
     .filter(Boolean);
 
+  const tags = Array.from(
+    new Set(
+      tagsText
+        .split(/[,\s]+/)
+        .map(normalizeTag)
+        .filter(Boolean)
+    )
+  ).slice(0, 12);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -26,12 +45,13 @@ export default function BulkAddPage() {
       const res = await fetch("/api/sites/bulk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ domains, lang_default: langDefault }),
+        body: JSON.stringify({ domains, lang_default: langDefault, tags }),
       });
       const data = (await res.json()) as { error?: string; requested?: number; inserted?: number };
       if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
       setResult({ requested: data.requested ?? 0, inserted: data.inserted ?? 0 });
       setText("");
+      setTagsText("");
       setTimeout(() => router.push("/dashboard"), 1500);
       router.refresh();
     } catch (err) {
@@ -71,20 +91,47 @@ export default function BulkAddPage() {
           />
         </div>
 
-        <div>
-          <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">
-            $ língua default do banner
-          </label>
-          <select
-            value={langDefault}
-            onChange={(e) => setLangDefault(e.target.value as "pt-PT" | "pt-BR" | "en")}
-            className="input-matrix"
-            disabled={busy}
-          >
-            <option value="pt-PT">Português (PT)</option>
-            <option value="pt-BR">Português (BR)</option>
-            <option value="en">English</option>
-          </select>
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">
+              $ língua default do banner
+            </label>
+            <select
+              value={langDefault}
+              onChange={(e) => setLangDefault(e.target.value as "pt-PT" | "pt-BR" | "en")}
+              className="input-matrix"
+              disabled={busy}
+            >
+              <option value="pt-PT">Português (PT)</option>
+              <option value="pt-BR">Português (BR)</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div>
+            <label className="text-xs uppercase tracking-wider text-matrix-500 block mb-2">
+              $ tags ({tags.length} aplicadas a todos)
+            </label>
+            <input
+              type="text"
+              placeholder="cliente-x, premium, ecommerce"
+              value={tagsText}
+              onChange={(e) => setTagsText(e.target.value)}
+              className="input-matrix"
+              disabled={busy}
+            />
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="text-[10px] px-1.5 py-0.5 rounded text-matrix-300 bg-matrix-500/5 border border-matrix-500/20 font-mono"
+                  >
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {error && (
