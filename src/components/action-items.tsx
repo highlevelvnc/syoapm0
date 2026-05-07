@@ -118,6 +118,8 @@ export async function ActionItems() {
             count={commonIssues[0].count}
             label={commonIssues[0].title}
             sublabel={`em ${commonIssues[0].count} site${commonIssues[0].count === 1 ? "" : "s"} · ${commonIssues[0].severity}`}
+            href={`/dashboard/issues/${commonIssues[0].code}`}
+            cta="batch fix"
             extra={
               commonIssues.length > 1 ? (
                 <div className="text-[10px] text-ink-500 mt-2">
