@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { fmtNumber } from "@/lib/utils";
 import { SitesTable, type SiteRow } from "@/components/sites-table";
 import { ScanAllButton } from "@/components/scan-all-button";
+import { ActionItems } from "@/components/action-items";
 import type { Grade } from "@/lib/scanners";
 
 export const dynamic = "force-dynamic";
@@ -132,6 +133,8 @@ export default async function DashboardPage() {
         />
         <Stat label="consents (30d)" value={fmtNumber(totalConsents)} />
       </div>
+
+      <ActionItems />
 
       <SitesTable rows={rows} />
     </main>
